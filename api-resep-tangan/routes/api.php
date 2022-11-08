@@ -23,7 +23,9 @@ Route::group([
     'prefix' => 'auth',
     'controller' => AuthController::class
 ], function () {
-    Route::get('/', 'auth');
-    Route::post('/login', 'login');
-    Route::post('/register', 'register');
+    Route::get('/me', 'me'); // Token Required
+    Route::post('/refresh','refresh')->name('refresh');
+    Route::post('/login', 'login')->name('login');
+    Route::post('/register', 'register')->name('register');
+    Route::post('/logout','logout')->name('logout');
 });
