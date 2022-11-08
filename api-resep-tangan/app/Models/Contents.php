@@ -15,8 +15,7 @@ class Contents extends Model
      */
     protected $fillable = [
         'recipe_id',
-        'image',
+        'media',
         'description',
-        'video'
     ];
 }

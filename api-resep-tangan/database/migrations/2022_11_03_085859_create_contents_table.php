@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('recipe_id')->constrained('recipes');
-            $table->string('image');
-            $table->string('description');
-            $table->string('video');
+            $table->string('media');
+            $table->text('description');
             $table->timestamps();
         });
     }

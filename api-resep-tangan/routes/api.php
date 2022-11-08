@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RecipesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group([
     'prefix' => 'auth',
     'controller' => AuthController::class
@@ -28,4 +25,11 @@ Route::group([
     Route::post('/login', 'login')->name('login');
     Route::post('/register', 'register')->name('register');
     Route::post('/logout','logout')->name('logout');
+});
+
+Route::group([
+    'prefix' => 'recipes',
+    'controller' => RecipesController::class
+],function(){
+    Route::get('/','recipes');
 });

@@ -15,6 +15,7 @@ class Recipes extends Model
      */
     protected $fillable = [
         'title',
-        'viewer',
+        'views',
+        'description'
     ];
 }
