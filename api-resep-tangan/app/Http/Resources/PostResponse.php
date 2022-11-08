@@ -12,8 +12,8 @@ class PostResponse extends JsonResource
     /**
      * __construct
      *
-     * @param  mixed $status
-     * @param  mixed $message
+     * @param  boolean $status
+     * @param  string $message
      * @param  mixed $resource
      * @return void
      */
@@ -33,7 +33,7 @@ class PostResponse extends JsonResource
     public function toArray($request)
     {
         return [
-            'success'   => $this->status,
+            'status'   => $this->status ? 'success' : 'failed',
             'message'   => $this->message,
             'data'      => $this->resource
         ];

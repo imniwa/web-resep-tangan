@@ -11,75 +11,76 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    //
-    public function auth()
+    public function __construct()
     {
-        return 'helo';
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+        $credentials = $request->only('email', 'password');
+
+        $token = Auth::attempt($credentials);
+        if (!$token) {
+            return new PostResponse(false,'Unauthorized');
+        }
+
+        $user = Auth::user();
+        return new PostResponse(true, 'success', [
+            'user' => $user,
+            'authorization' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
+        ]);
     }
 
     public function register(Request $request)
     {
-        $rules = [
-            'name'          => 'required|string|min:3|max:64',
-            'email'                 => 'required|email|unique:users',
-            'password'              => 'required|min:6'
-        ];
-        $messages = [
-            'name.required'         => 'name is required',
-            'name.min'              => 'name min length : 6',
-            'name.max'              => 'name max length : 64',
-            'email.required'        => 'email is required',
-            'email.email'           => 'email invalid',
-            'email.unique'          => 'email has registered',
-            'password.required'     => 'password is required',
-            'password.min'          => 'password min length : 6'
-        ];
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return new PostResponse(false, $validator->errors()->first());
-        }
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-        try {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
-            return new PostResponse(true, 'user has registered', $user);
-        } catch (\Throwable $th) {
-            return new PostResponse(false, 'user failed to register');
-        }
+        $token = Auth::login($user);
+        return new PostResponse(true, 'User Created successfully', [
+            'user' => $user,
+            'authorization' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
+        ]);
     }
 
-    public function login(Request $request)
+    public function logout()
     {
-        try {
-            $request->validate([
-                'email' => 'email|required',
-                'password' => 'required'
+        Auth::logout();
+        return new PostResponse(true, 'Successfully logged out');
+    }
+
+    public function me()
+    {
+        return new PostResponse(true,'success',['User' => Auth::user()]);
+    }
+
+    public function refresh()
+    {
+        return new PostResponse(true,'success',[
+            'user' => Auth::user(),
+            'authorization' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
             ]);
-
-            $user = User::where('email', $request->email)->first();
-            if (!Hash::check($request->password, $user->password, [])) {
-                return new PostResponse(false, 'Password incorrect');
-            }
-
-            $credentials = request(['email', 'password']);
-            if (!Auth::attempt($credentials)) {
-                return new PostResponse(false, 'email or password incorrect');
-            }
-
-            $tokenResult = $user->createToken(str()->random(40))->plainTextToken;
-
-            $data = [
-                'access_token' => $tokenResult,
-                'token_type' => 'Bearer',
-                'user' => $user
-            ];
-            return new PostResponse(true, 'session created successfully', $data);
-        } catch (\Throwable $th) {
-            return new PostResponse(false, 'failed to create session');
-        }
     }
 }
