@@ -18,9 +18,9 @@ function RegisterForm() {
   };
 
   return (
-    <div className="container lg:h-screen lg:grid lg:place-items-center">
+    <div className="container md:h-screen md:grid place-items-center">
       <form>
-        <div className="form-inner place-items-center lg:grid lg:grid-cols-2 lg:bg-gray-200 lg:rounded-2xl lg:p-10">
+        <div className="form-inner place-items-center md:grid md:grid-cols-2 md:bg-gray-200 md:rounded-2xl md:p-10">
           <div className="logo flex items-center flex-col">
             <div className="flex justify-center">
               <Image
@@ -36,8 +36,8 @@ function RegisterForm() {
           </div>
 
           {/* FORM BOX */}
-          <div className="form-box w-full px-4 lg:grid">
-            <p className="text-gray-800 text-xs text-center mt-10 lg:mt-4 mb-3">
+          <div className="form-box w-full px-4 md:grid">
+            <p className="text-gray-800 text-xs text-center mt-10 md:mt-4 mb-3">
               Silahkan Masuk dengan email yang sudah terdaftar
             </p>
             {/* INPUT NAMA LENGKAP */}
@@ -151,7 +151,7 @@ function RegisterForm() {
                 className="w-full bg-orange-500 hover:bg-orange-600 rounded-md py-1 mt-6 text-white font-semibold mb-5"
               />
               <div className="relative flex items-center justify-center w-full border border-t mb-5 bg-gray-400">
-                <div className="absolute px-3 bg-white lg:bg-gray-200 text-gray-600">
+                <div className="absolute px-3 bg-white md:bg-gray-200 text-gray-600">
                   atau
                 </div>
               </div>

@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "./LoginForm";
 function Login() {
   return (
-    <div>
+    <div className="w-screen h-screen grid place-items-center">
       <LoginForm />
     </div>
   );
