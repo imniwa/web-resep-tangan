@@ -148,7 +148,7 @@ function RegisterForm() {
             <div className="button">
               <input
                 type="submit"
-                value="Masuk"
+                value="Daftar"
                 className="w-full bg-orange-500 hover:bg-orange-600 rounded-md py-2 mt-6 text-white font-semibold mb-5"
               />
               <div className="relative flex items-center justify-center w-full border border-t mb-5 bg-gray-400">
@@ -156,10 +156,10 @@ function RegisterForm() {
               </div>
 
               <Link
-                href="/register"
+                href="/login"
                 className="w-full block bg-gray-500 hover:bg-gray-600 py-2 px-5 rounded-md text-white font-semibold text-center"
               >
-                Daftar
+                Masuk
               </Link>
             </div>
           </div>
