@@ -18,29 +18,28 @@ function RegisterForm() {
   };
 
   return (
-    <div className="container">
+    <div className="container lg:h-screen lg:grid lg:place-items-center">
       <form>
-        <div className="form-inner items-center">
-          <div className="logo flex items center flex-col">
+        <div className="form-inner place-items-center lg:grid lg:grid-cols-2 lg:bg-gray-200 lg:rounded-2xl lg:p-10">
+          <div className="logo flex items-center flex-col">
             <div className="flex justify-center">
               <Image
                 src={Logo}
                 alt="logo resep tangan"
-                width={200}
-                height={250}
+                width={256}
+                height={256}
               />
             </div>
-            <p className=" text-center font-semibold text-xs italic">
+            <p className=" text-center font-semibold text-xs italic w-56">
               berbagi resep buatan rumah dari tangan ke tangan
             </p>
           </div>
 
-          <p className="text-gray-800 text-xs text-center mt-10 mb-3">
-            Silahkan Masuk dengan email yang sudah terdaftar
-          </p>
-
           {/* FORM BOX */}
-          <div className="form-box w-full px-4">
+          <div className="form-box w-full px-4 lg:grid">
+            <p className="text-gray-800 text-xs text-center mt-10 lg:mt-4 mb-3">
+              Silahkan Masuk dengan email yang sudah terdaftar
+            </p>
             {/* INPUT NAMA LENGKAP */}
             <div className="input-box flex flex-col">
               <div
@@ -149,15 +148,17 @@ function RegisterForm() {
               <input
                 type="submit"
                 value="Daftar"
-                className="w-full bg-orange-500 hover:bg-orange-600 rounded-md py-2 mt-6 text-white font-semibold mb-5"
+                className="w-full bg-orange-500 hover:bg-orange-600 rounded-md py-1 mt-6 text-white font-semibold mb-5"
               />
               <div className="relative flex items-center justify-center w-full border border-t mb-5 bg-gray-400">
-                <div className="absolute px-3 bg-white text-gray-600">atau</div>
+                <div className="absolute px-3 bg-white lg:bg-gray-200 text-gray-600">
+                  atau
+                </div>
               </div>
 
               <Link
                 href="/login"
-                className="w-full block bg-gray-500 hover:bg-gray-600 py-2 px-5 rounded-md text-white font-semibold text-center"
+                className="w-full block bg-gray-500 hover:bg-gray-600 py-1 px-5 rounded-md text-white font-semibold text-center"
               >
                 Masuk
               </Link>
