@@ -18,4 +18,9 @@ class Contents extends Model
         'media',
         'description',
     ];
+
+    public function recipes()
+    {
+        return $this->hasOne(Recipes::class, 'id', 'recipe_id');
+    }
 }

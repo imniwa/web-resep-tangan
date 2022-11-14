@@ -46,7 +46,7 @@ Route::group([
         'prefix' => 'contents',
         'controller' => ContentsController::class
     ], function () {
-        Route::get('/', 'contents');
+        Route::get('/', 'contents')->name('get_contents');
         Route::post('/', 'add_contents');
         Route::put('/', 'update_contents');
         Route::delete('/', 'delete_contents');

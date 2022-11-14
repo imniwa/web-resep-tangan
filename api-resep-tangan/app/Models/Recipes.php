@@ -32,4 +32,9 @@ class Recipes extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function contents()
+    {
+        return $this->hasMany(Contents::class, 'recipe_id', 'id');
+    }
 }
