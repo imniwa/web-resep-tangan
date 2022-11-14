@@ -17,10 +17,10 @@ class PostResponse extends JsonResource
      * @param  mixed $resource
      * @return void
      */
-    public function __construct($status, $message, $resource = null)
+    public function __construct($status, $message = null, $resource = null)
     {
         parent::__construct($resource);
-        $this->status  = $status;
+        $this->status  = $status ? 'success' : 'failed';
         $this->message = $message;
     }
 
@@ -32,10 +32,29 @@ class PostResponse extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'status'   => $this->status ? 'success' : 'failed',
-            'message'   => $this->message,
-            'data'      => $this->resource
-        ];
+        if ($this->message != null && $this->resource != null) {
+            return [
+                'status'   => $this->status,
+                'message'   => $this->message,
+                'data'      => $this->resource
+            ];
+        }
+        if ($this->message == null && $this->resource == null) {
+            return [
+                'status'   => $this->status
+            ];
+        }
+        if ($this->message == null) {
+            return [
+                'status'   => $this->status,
+                'data'      => $this->resource
+            ];
+        }
+        if ($this->resource == null) {
+            return [
+                'status'   => $this->status,
+                'message'   => $this->message,
+            ];
+        }
     }
 }

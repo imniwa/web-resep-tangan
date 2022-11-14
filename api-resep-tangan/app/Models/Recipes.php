@@ -15,7 +15,21 @@ class Recipes extends Model
      */
     protected $fillable = [
         'title',
+        'description',
         'views',
-        'description'
+        'user_id'
     ];
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'views' => 0,
+    ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

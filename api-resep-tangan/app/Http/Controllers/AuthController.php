@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         $token = Auth::attempt($credentials);
         if (!$token) {
-            return new PostResponse(false,'Unauthorized');
+            return new PostResponse(false, 'Unauthorized');
         }
 
         $user = Auth::user();
@@ -62,6 +62,17 @@ class AuthController extends Controller
         ]);
     }
 
+    public function change_password(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6'
+        ]);
+
+        $user = User::where('id', $request->user()->id);
+        $user->update(['password' => Hash::make($request->password)]);
+        return new PostResponse(true, 'Password Changed successfully', Auth::logout());
+    }
+
     public function logout()
     {
         Auth::logout();
@@ -70,17 +81,17 @@ class AuthController extends Controller
 
     public function me()
     {
-        return new PostResponse(true,'success',['User' => Auth::user()]);
+        return new PostResponse(true, 'success', ['User' => Auth::user()]);
     }
 
     public function refresh()
     {
-        return new PostResponse(true,'success',[
+        return new PostResponse(true, 'success', [
             'user' => Auth::user(),
             'authorization' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
-            ]);
+        ]);
     }
 }
