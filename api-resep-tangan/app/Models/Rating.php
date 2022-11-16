@@ -18,4 +18,14 @@ class Rating extends Model
         'recipe_id',
         'user_id',
     ];
+
+    public function user()
+    {
+        $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function recipe()
+    {
+        $this->hasOne(Recipes::class, 'id', 'recipe_id');
+    }
 }

@@ -13,7 +13,7 @@ class RecipesController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:api', ['except' => ['get_recipes']]);
+        $this->middleware('auth:api', ['except' => ['recipes']]);
     }
     public static function get($options = [])
     {
