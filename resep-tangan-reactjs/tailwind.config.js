@@ -36,6 +36,12 @@ module.exports = {
         },
         error: "#FF3333",
       },
+      fontSize: {
+        small: "8px",
+      },
+      fontFamily: {
+        sans: ["Inter, sans-serif"],
+      },
     },
   },
   plugins: [],

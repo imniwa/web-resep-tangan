@@ -7,6 +7,7 @@ import Me from "./pages/Me";
 import Password from "./pages/Password";
 import Refresh from "./pages/Refresh";
 import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
         <Route exact path="/password" element={<Password />} />
         <Route exact path="/me" element={<Me />} />
       </Routes>
+      <Navbar />
     </Router>
   );
 }
