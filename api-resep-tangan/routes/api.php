@@ -46,18 +46,29 @@ Route::group([
         'prefix' => 'contents',
         'controller' => ContentsController::class
     ], function () {
-        Route::get('/', 'contents')->name('get_contents');
         Route::post('/', 'add_contents');
         Route::put('/', 'update_contents');
         Route::delete('/', 'delete_contents');
+        Route::get('/{basename}', 'media');
     });
-});
 
-Route::group([
-    'prefix' => 'comments',
-    'controller' => CommentsController::class
-], function () {
-    Route::get('/', 'comments');
-    Route::post('/', 'add_comment');
-    Route::delete('/', 'delete_comment');
+    // domain/api/recipes/rating
+    Route::group([
+        'prefix' => 'rating',
+        'controller' => RatingController::class,
+    ], function () {
+        Route::get('/', 'rating');
+        Route::post('/', 'add_rating');
+        Route::put('/', 'update_rating');
+    });
+
+    // domain/api/recipes/comments
+    Route::group([
+        'prefix' => 'comments',
+        'controller' => CommentsController::class
+    ], function () {
+        Route::get('/', 'comments');
+        Route::post('/', 'add_comment');
+        Route::delete('/', 'delete_comment');
+    });
 });

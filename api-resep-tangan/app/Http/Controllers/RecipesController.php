@@ -20,16 +20,16 @@ class RecipesController extends Controller
         $id = isset($options['id']) ? $options['id'] : null;
         $title = isset($options['title']) ? $options['title'] : null;
         if ($id) {
-            $recipes = Recipes::where('id', $id);
-        }
-        if ($title) {
-            $recipes = Recipes::where('title', $title)->get();
+            $recipes = Recipes::where('id', $id)->get();
+        } else if ($title) {
+            $recipes = Recipes::where('title', 'like', '%' . $title . '%')->get();
         } else {
             $recipes = Recipes::all();
         }
         foreach ($recipes as $recipe) {
-            $user = Recipes::findOrFail($recipe->id)->user()->first();
-            $recipe->user = $user;
+            $r = Recipes::findOrFail($recipe->id);
+            $recipe->user = $r->user()->first();
+            $recipe->contents = $r->contents()->get();
         }
         return $recipes;
     }
@@ -49,12 +49,12 @@ class RecipesController extends Controller
     public function recipes(Request $request)
     {
         if ($request->id) {
-            return new PostResponse(true, null, self::get($request->id));
+            return new PostResponse(true, resource: self::get(['id' => $request->id]));
         }
         if ($request->title) {
-            return new PostResponse(true, null, self::get(['title' => $request->title]));
+            return new PostResponse(true, resource: self::get(['title' => $request->title]));
         }
-        return new PostResponse(true, null, self::get());
+        return new PostResponse(true, resource: self::get());
     }
 
     public function add_recipes(Request $request)

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResponse;
 use App\Models\Contents;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ContentsController extends Controller
 {
@@ -18,7 +19,7 @@ class ContentsController extends Controller
         if (!Storage::exists(self::$dir)) {
             Storage::makeDirectory(self::$dir);
         }
-        $this->middleware('auth:api', ['except' => ['get_contents']]);
+        $this->middleware('auth:api', ['except' => ['media']]);
     }
 
     public static function getDir()
@@ -26,9 +27,15 @@ class ContentsController extends Controller
         return storage_path('app/' . self::$dir);
     }
 
-    public static function get($recipes_id)
+    public static function get($recipes_id = null, $id = null)
     {
-        return Contents::where('recipes_id', $recipes_id)->get();
+        if ($recipes_id) {
+            return Contents::where('recipes_id', $recipes_id)->get();
+        }
+        if ($id) {
+            return Contents::where('id', $id)->get();
+        }
+        return null;
     }
     public static function add($data)
     {
@@ -43,37 +50,85 @@ class ContentsController extends Controller
         return Contents::where('id', $id)->delete();
     }
 
-    public function contents(Request $request)
+    // public function content(Request $request)
+    // {
+    //     return new PostResponse(true,resource:self::get())
+    // }
+
+    public function media(Request $request, $basename)
     {
+        $file = Storage::get(self::$dir . '/' . $basename);
+        if ($file) {
+            $img = Image::make($file);
+            return $img->response();
+        }
     }
 
     public function add_contents(Request $request)
     {
         $request->validate([
-            'media' => 'required|file|mimetypes:video/*,image/jpg,image/png,image/jpeg',
+            'recipe_id' => 'required',
+            'media' => 'required|file|mimetypes:image/jpg,image/png,image/jpeg',
             'description' => 'required|string'
         ]);
         $file = $request->file('media');
-        $basename = Hash::make($request->user()->id . now(), [
-            'memory' => 128,
-            'time' => 1,
-            'threads' => 1
-        ]) . '.' . $file->getClientOriginalExtension();
+        $basename = strtotime(now()) . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
         $file = $file->move(self::getDir(), $basename);
         $media = [
             'basename' => $basename,
             'path' => self::$dir . '/' . $basename,
             'mimeType' => $file->getMimeType(),
             'extension' => $file->getExtension(),
-            'size' => $file->getSize()
+            'size' => $file->getSize(),
         ];
-        return $media;
+        $data = [
+            'recipe_id' => $request->recipe_id,
+            'media' => json_encode($media),
+            'description' => $request->description
+        ];
+        return new PostResponse(true, resource: self::add($data));
     }
 
     public function update_contents(Request $request)
     {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        if (self::get(id: $request->id) == null) {
+            return new PostResponse(true, 'contents not found');
+        }
+        $data = [];
+        $file = $request->file('media');
+        if ($file) {
+            $basename = strtotime(now()) . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file = $file->move(self::getDir(), $basename);
+            $media = [
+                'basename' => $basename,
+                'path' => self::$dir . '/' . $basename,
+                'mimeType' => $file->getMimeType(),
+                'extension' => $file->getExtension(),
+                'size' => $file->getSize(),
+            ];
+            if ($request->media) {
+                $data['media'] = json_encode($media);
+            }
+        }
+        if ($request->description) {
+            $data['description'] = $request->description;
+        }
+        self::update($request->id, $data);
+        return new PostResponse(true, 'Contents updated', self::get(id: $request->id));
     }
     public function delete_contents(Request $request)
     {
+        $request->validate([
+            '_id' => 'required'
+        ]);
+        $content = self::get(id: $request->_id);
+        if ($content == null) {
+            return new PostResponse(true, 'Contents not found', $content);
+        }
+        self::delete($request->_id);
+        return new PostResponse(true, 'Contents deleted', $content);
     }
 }
