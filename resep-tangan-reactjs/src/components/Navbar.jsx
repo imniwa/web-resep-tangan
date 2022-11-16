@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 
 function Navbar() {
   return (
-    <div className="block fixed bottom-0 lg:top-0 bg-primary w-full h-12 px-10 flex justify-between items-center">
+    <div className="block fixed bottom-0 lg:top-0 bg-primary w-full h-12 px-10 justify-between items-center">
       <Link to="">
         <Icon
           icon="ri:home-line"

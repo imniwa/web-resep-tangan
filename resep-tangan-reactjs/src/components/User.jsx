@@ -5,11 +5,11 @@ export default function User() {
   return (
     <div className="grid grid-rows-2 grid-flow-col">
       <div className="image row-span-2 col-span-1 rounded-full border-primary">
-        <img src={Arnold} alt="image name" />
+        <img src={Arnold} alt={`Arnold Poernomo`} />
       </div>
       <div className="box col-span-5">
         <div className="name text-xs font-medium font-sans">{`Arnold  Poernomo`}</div>
-        <div className="ratting-view gap-5 flex items-center gap-2">
+        <div className="ratting-view gap-5 flex items-center">
           <div className="box-rating flex gap-2 items-center">
             <Icon
               icon="material-symbols:star"
