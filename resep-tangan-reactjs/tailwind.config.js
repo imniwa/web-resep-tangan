@@ -40,7 +40,9 @@ module.exports = {
         small: "8px",
       },
       fontFamily: {
-        sans: ["Inter, sans-serif"],
+        inter: ["Inter, sans-serif"],
+        ibm: ["IBM Plex Sans JP, sans-serif"],
+        poppins: ["Poppins, sans-serif"],
       },
     },
   },

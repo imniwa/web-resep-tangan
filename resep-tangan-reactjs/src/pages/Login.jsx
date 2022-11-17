@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import LoginForm from "../components/LoginForm";
+import Me from "./Me";
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
 
@@ -22,7 +23,9 @@ export default function Login() {
   return (
     <div className="w-screen h-screen grid place-items-center">
       {user.email !== "" ? (
-        <div className="welcome">WELCOME {user.email}</div>
+        <div className="welcome">
+          <Me admin={user} />
+        </div>
       ) : (
         <LoginForm Login={login} />
       )}

@@ -10,7 +10,7 @@ function Home() {
         <Search />
 
         {/* KATEGORI */}
-        <p className="font-bold text-xs font-sans">Kategori</p>
+        <p className="font-bold text-xs font-inter">Kategori</p>
         <div className="popular my-4 w-full grid grid-cols-4 gap-4">
           <div className="box w-16 h-16 shadow-xl text-sm flex flex-col items-center">
             <Icon
@@ -78,7 +78,7 @@ function Home() {
         </div>
 
         {/* PENGGUNA TERATAS */}
-        <p className="font-bold text-xs mb-4 font-sans">Pengguna Teratas</p>
+        <p className="font-bold text-xs mb-4 font-inter">Pengguna Teratas</p>
         <User />
       </div>
     </main>

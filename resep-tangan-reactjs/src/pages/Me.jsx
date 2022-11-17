@@ -1,7 +1,6 @@
-import React from "react";
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom";
 
-function Me() {
-  return <div>Me</div>;
+export default function Me() {
+  return <div className="w-screen h-screen grid place-items-center"></div>;
 }
-
-export default Me;
