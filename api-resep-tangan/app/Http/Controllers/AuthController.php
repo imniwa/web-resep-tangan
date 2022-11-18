@@ -46,8 +46,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+        $pos = strpos($request->email, '@');
+        $username = Str::substr($request->email, 0, $pos);
+
+        while (User::where('username', $username)->first()) {
+            $username .= Str::random(3);
+        }
+
         $user = User::create([
             'name' => $request->name,
+            'username' => $username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

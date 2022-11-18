@@ -32,29 +32,16 @@ class PostResponse extends JsonResource
      */
     public function toArray($request)
     {
-        if ($this->message != null && $this->resource != null) {
-            return [
-                'status'   => $this->status,
-                'message'   => $this->message,
-                'data'      => $this->resource
-            ];
-        }
-        if ($this->message == null && $this->resource == null) {
-            return [
-                'status'   => $this->status
-            ];
-        }
         if ($this->message == null) {
             return [
                 'status'   => $this->status,
-                'data'      => $this->resource
+                'data'      => $this->resource == null ? [] : $this->resource
             ];
         }
-        if ($this->resource == null) {
-            return [
-                'status'   => $this->status,
-                'message'   => $this->message,
-            ];
-        }
+        return [
+            'status'   => $this->status,
+            'message'   => $this->message,
+            'data'      => $this->resource == null ? [] : $this->resource
+        ];
     }
 }

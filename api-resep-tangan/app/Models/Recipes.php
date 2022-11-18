@@ -19,14 +19,6 @@ class Recipes extends Model
         'views',
         'user_id'
     ];
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'views' => 0,
-    ];
 
     public function user()
     {
@@ -38,8 +30,8 @@ class Recipes extends Model
         return $this->hasMany(Contents::class, 'recipe_id', 'id');
     }
 
-    public function rating()
+    public function comments()
     {
-        return $this->hasMany(Rating::class, 'recipe_id', 'id');
+        return $this->hasMany(Comments::class, 'recipe_id', 'id');
     }
 }

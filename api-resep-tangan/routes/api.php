@@ -3,7 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContentsController;
+use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -70,5 +73,25 @@ Route::group([
         Route::get('/', 'comments');
         Route::post('/', 'add_comment');
         Route::delete('/', 'delete_comment');
+    });
+});
+
+
+// domain/api/user
+Route::group([
+    'prefix' => 'user',
+    'controller' => UserController::class
+], function () {
+    Route::get('/{username}', 'user');
+    Route::get('/{username}/followers', 'followers');
+    Route::get('/{username}/following', 'following');
+
+    // domain/api/user/following
+    Route::group([
+        'prefix' => 'following',
+        'controller' => FollowsController::class
+    ], function () {
+        Route::post('/', 'add_following');
+        Route::delete('/', 'delete_following');
     });
 });

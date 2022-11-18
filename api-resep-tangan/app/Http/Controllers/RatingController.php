@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
 use App\Models\Rating;
+use App\Models\Recipes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,10 +18,11 @@ class RatingController extends Controller
     public static function get($recipe_id = null, $id = null)
     {
         if ($recipe_id) {
-            return Rating::where('recipe_id', $recipe_id)->get();
+            $rating = Rating::where('recipe_id', $recipe_id)->get();
+            return floatval(number_format($rating->average('rating'), 2));
         }
         if ($id) {
-            return Rating::where('id', $id)->get();
+            return Rating::where('id', $id)->get()->rating;
         }
         return null;
     }
@@ -30,24 +32,44 @@ class RatingController extends Controller
         return Rating::create($data);
     }
 
-    public static function update($id, $data)
-    {
-        return Rating::where('id', $id)->update($data);
-    }
-
     public function rating(Request $request)
     {
+        $rating = self::get(recipe_id: $request->recipe_id);
+        return new PostResponse(true, resource: $rating);
     }
+
     public function add_rating(Request $request)
     {
-        if (!Auth::check()) {
-            return new PostResponse(false, 'unauthorized');
+        $request->validate([
+            'recipe_id' => 'required',
+            'rating' => 'required'
+        ]);
+        $user = Auth::user();
+        $recipes = Recipes::findOrFail($request->recipe_id);
+        if ($recipes->user()->first()->id == $user->id) {
+            return new PostResponse(false);
         }
+        $rating = Rating::where('user_id', $user->id)
+            ->where('recipe_id', $request->recipe_id);
+        if ($rating != null) {
+            return new PostResponse(false);
+        }
+        $data = $request->only(['recipe_id', 'rating']);
+        $data['user_id'] = $user->id;
+        return new PostResponse(true, resource: self::add($data));
     }
+
     public function update_rating(Request $request)
     {
-        if (!Auth::check()) {
-            return new PostResponse(false, 'unauthorized');
-        }
+        $request->validate([
+            'recipe_id' => 'required',
+            'rating' => 'required'
+        ]);
+        $user = Auth::user();
+        $rating = Rating::where('user_id', $user->id)
+            ->where('recipe_id', $request->recipe_id)
+            ->first();
+        $rating->update(['rating' => $request->rating]);
+        return new PostResponse(true, resource: $rating);
     }
 }

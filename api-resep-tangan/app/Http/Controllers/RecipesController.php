@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
+use App\Models\Rating;
 use App\Models\Recipes;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -28,8 +29,10 @@ class RecipesController extends Controller
         }
         foreach ($recipes as $recipe) {
             $r = Recipes::findOrFail($recipe->id);
+            $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
             $recipe->user = $r->user()->first();
             $recipe->contents = $r->contents()->get();
+            $recipe->comments = $r->comments()->get();
         }
         return $recipes;
     }
