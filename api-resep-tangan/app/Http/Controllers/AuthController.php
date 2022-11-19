@@ -6,7 +6,6 @@ use App\Http\Resources\PostResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -31,7 +30,6 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        Cookie::queue('name', $request->ip() . '|' . Str::random(6), 60);
         return new PostResponse(true, 'success', [
             'user' => $user,
             'authorization' => [

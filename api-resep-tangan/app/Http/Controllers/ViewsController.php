@@ -5,10 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResponse;
 use App\Models\Views;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ViewsController extends Controller
 {
+    public static function add(Request $request)
+    {
+        $request->validate([
+            'recipe_id' => 'required'
+        ]);
+        if ($request->cookie('name') != null) {
+            $token = $request->cookie('name');
+            $exist = Views::where('token', $token)->first();
+            if (!$exist) {
+                Views::create([
+                    'recipe_id' => $request->recipe_id,
+                    'token' => $token
+                ]);
+            }
+        }
+    }
+
     public function views(Request $request)
     {
         $request->validate([
@@ -20,17 +36,7 @@ class ViewsController extends Controller
 
     public function add_views(Request $request)
     {
-        $request->validate([
-            'recipe_id' => 'required'
-        ]);
-        $token = $request->cookie('name');
-        $exist = Views::where('token', $token)->first();
-        if (!$exist) {
-            Views::create([
-                'recipe_id' => $request->recipe_id,
-                'token' => $token
-            ]);
-        }
+        self::add($request);
         return $this->views($request);
     }
 }

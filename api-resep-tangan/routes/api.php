@@ -8,8 +8,6 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
 /*

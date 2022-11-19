@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResponse;
 use App\Models\Rating;
 use App\Models\Recipes;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use stdClass;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 class RecipesController extends Controller
 {
@@ -52,10 +51,15 @@ class RecipesController extends Controller
 
     public function recipes(Request $request)
     {
+        Cookie::queue('name', $request->ip() . '|' . Str::random(6), 60);
         if ($request->id) {
+            $request->merge(['recipe_id' => $request->id]);
+            ViewsController::add($request);
             return new PostResponse(true, resource: self::get(['id' => $request->id]));
         }
         if ($request->title) {
+            $request->merge(['recipe_id' => Recipes::where('title', 'like', '%' . $request->title . '%')->get()->id]);
+            ViewsController::add($request);
             return new PostResponse(true, resource: self::get(['title' => $request->title]));
         }
         return new PostResponse(true, resource: self::get());
