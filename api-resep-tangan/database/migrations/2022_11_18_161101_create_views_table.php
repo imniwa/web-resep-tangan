@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('recipe_id')
                 ->constrained('recipes');
-            $table->string('token', 64)->unique();
+            $table->string('token')->unique();
             $table->timestamps();
         });
     }

@@ -16,7 +16,6 @@ class Recipes extends Model
     protected $fillable = [
         'title',
         'description',
-        'views',
         'user_id'
     ];
 
@@ -33,5 +32,10 @@ class Recipes extends Model
     public function comments()
     {
         return $this->hasMany(Comments::class, 'recipe_id', 'id');
+    }
+
+    public function views()
+    {
+        return $this->hasMany(Views::class, 'recipe_id', 'id');
     }
 }

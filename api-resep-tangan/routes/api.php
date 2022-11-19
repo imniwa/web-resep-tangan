@@ -7,7 +7,9 @@ use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViewsController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +45,15 @@ Route::group([
     Route::post('/', 'add_recipes');
     Route::put('/', 'update_recipes');
     Route::delete('/', 'delete_recipes');
+
+    // domain/api/recipes/views
+    Route::group([
+        'prefix' => 'views',
+        'controller' => ViewsController::class
+    ], function () {
+        Route::get('/', 'views');
+        Route::post('/', 'add_views')->middleware('auth:api');
+    });
 
     // domain/api/recipes/contents
     Route::group([
