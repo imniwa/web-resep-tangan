@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,13 +23,13 @@ class Recipes extends Model
     ];
 
     protected $casts = [
-        'banner' => AsArrayObject::class
+        'banner' => AsArrayObject::class,
     ];
 
     /**
      * This will be called when fetching the element.
      */
-    public function getMediaAttribute($value)
+    public function getBannerAttribute($value)
     {
         return $value;
     }
@@ -36,7 +37,7 @@ class Recipes extends Model
     /**
      * This will be called when storing/updating the element.
      */
-    public function setMediaAttribute($value)
+    public function setBannerAttribute($value)
     {
         $this->attributes['banner'] = (string)$value;
     }

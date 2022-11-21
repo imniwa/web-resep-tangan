@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
-        'media'
+        'media',
     ];
 
     /**
@@ -44,8 +45,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
+        'media' => AsArrayObject::class,
         'email_verified_at' => 'datetime',
-        'media' => AsArrayObject::class
     ];
 
     /**

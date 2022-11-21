@@ -31,7 +31,7 @@ Route::group([
     Route::post('/login', 'login')->name('login');
     Route::post('/register', 'register')->name('register');
     Route::post('/logout', 'logout')->name('logout');
-    Route::put('/password', 'change_password')->name('change-password');
+    Route::post('/update', 'update')->name('update');
 });
 
 // domain/api/recipes
@@ -41,7 +41,7 @@ Route::group([
 ], function () {
     Route::get('/', 'recipes')->name('get_recipes');
     Route::post('/', 'add_recipes');
-    Route::put('/', 'update_recipes');
+    // Route::put('/', 'update_recipes');
     Route::delete('/', 'delete_recipes');
 
     // domain/api/recipes/views
@@ -59,7 +59,7 @@ Route::group([
         'controller' => ContentsController::class
     ], function () {
         Route::post('/', 'add_contents');
-        Route::put('/', 'update_contents');
+        // Route::put('/', 'update_contents');
         Route::delete('/', 'delete_contents');
         Route::get('/{basename}', 'media');
     });

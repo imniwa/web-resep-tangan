@@ -16,9 +16,6 @@ class ContentsController extends Controller
 
     public function __construct()
     {
-        if (!Storage::exists(self::$dir)) {
-            Storage::makeDirectory(self::$dir);
-        }
         $this->middleware('auth:api', ['except' => ['media']]);
     }
 
@@ -28,7 +25,7 @@ class ContentsController extends Controller
             return Contents::where('recipes_id', $recipes_id)->get();
         }
         if ($id) {
-            return Contents::where('id', $id)->get();
+            return Contents::where('id', $id)->first();
         }
         return null;
     }
@@ -61,6 +58,9 @@ class ContentsController extends Controller
 
     public function add_contents(Request $request)
     {
+        if (isset($request->id)) {
+            return $this->update_contents($request);
+        }
         $request->validate([
             'recipe_id' => 'required',
             'media' => 'required|file|mimetypes:image/jpg,image/png,image/jpeg',
@@ -70,7 +70,7 @@ class ContentsController extends Controller
         $data = [
             'recipe_id' => $request->recipe_id,
             'media' => json_encode(FileController::move($file, self::$dir)),
-            'step' => $request->step
+            'step' => Str::lower($request->step)
         ];
         return new PostResponse(true, resource: self::add($data));
     }
@@ -84,12 +84,13 @@ class ContentsController extends Controller
             return new PostResponse(true, 'contents not found');
         }
         $data = [];
+        $old = json_decode(self::get(id: $request->id)->media)->path;
         $file = $request->file('media');
         if ($file) {
-            $data['media'] = json_encode(FileController::move($file, self::$dir));
+            $data['media'] = json_encode(FileController::update($old, $file, self::$dir));
         }
         if ($request->step) {
-            $data['step'] = $request->step;
+            $data['step'] = Str::lower($request->step);
         }
         self::update($request->id, $data);
         return new PostResponse(true, 'Contents updated', self::get(id: $request->id));
@@ -103,6 +104,7 @@ class ContentsController extends Controller
         if ($content == null) {
             return new PostResponse(true, 'Contents not found', $content);
         }
+        FileController::delete(json_decode($content->media)->path);
         self::delete($request->_id);
         return new PostResponse(true, 'Contents deleted', $content);
     }

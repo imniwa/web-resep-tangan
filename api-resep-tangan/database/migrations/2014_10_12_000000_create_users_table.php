@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->json('media')->default("{\"path\":\"/user/default.jpg\"}");
+            $table->json('media')->default(json_encode(['path' => 'users/default.jpg']));
             $table->rememberToken();
             $table->timestamps();
         });

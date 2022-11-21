@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    private static $dir = 'users';
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
@@ -55,9 +57,9 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'username' => $username,
-            'email' => $request->email,
+            'name' => Str::lower($request->name),
+            'username' => Str::lower($username),
+            'email' => Str::lower($request->email),
             'password' => Hash::make($request->password),
         ]);
 
@@ -71,15 +73,24 @@ class AuthController extends Controller
         ]);
     }
 
-    public function change_password(Request $request)
+    public function update(Request $request)
     {
-        $request->validate([
-            'password' => 'required|string|min:6'
-        ]);
-
-        $user = User::where('id', $request->user()->id);
-        $user->update(['password' => Hash::make($request->password)]);
-        return new PostResponse(true, 'Password Changed successfully', Auth::logout());
+        $data = [];
+        foreach ($request->only(['username', 'media', 'password']) as $k => $d) {
+            if ($k == 'media') {
+                $data[$k] = json_encode(FileController::move($request->file('media'), self::$dir));
+            } else if ($k == 'password') {
+                $data[$k] = Hash::make($request->password);
+            } else {
+                $data[$k] = Str::lower($d);
+            }
+        }
+        $user = User::where('id', Auth::user()->id)->first();
+        $user->update($data);
+        if (isset($data['password'])) {
+            Auth::logout();
+        }
+        return new PostResponse(true, resource: $user);
     }
 
     public function logout()
