@@ -51,16 +51,18 @@ class RecipesController extends Controller
 
     public function recipes(Request $request)
     {
-        Cookie::queue('name', $request->ip() . '|' . Str::random(6), 60);
-        if ($request->id) {
-            $request->merge(['recipe_id' => $request->id]);
-            ViewsController::add($request);
-            return new PostResponse(true, resource: self::get(['id' => $request->id]));
-        }
-        if ($request->title) {
-            $request->merge(['recipe_id' => Recipes::where('title', 'like', '%' . $request->title . '%')->get()->id]);
-            ViewsController::add($request);
-            return new PostResponse(true, resource: self::get(['title' => $request->title]));
+        if (Cookie::get('resep_tangan_session') == null) {
+            Cookie::queue('resep_tangan_session', $request->ip() . '|' . Str::random(6), 60);
+            if ($request->id) {
+                $request->merge(['recipe_id' => $request->id]);
+                ViewsController::add($request);
+                return new PostResponse(true, resource: self::get(['id' => $request->id]));
+            }
+            if ($request->title) {
+                $request->merge(['recipe_id' => Recipes::where('title', 'like', '%' . $request->title . '%')->get()->id]);
+                ViewsController::add($request);
+                return new PostResponse(true, resource: self::get(['title' => $request->title]));
+            }
         }
         return new PostResponse(true, resource: self::get());
     }
