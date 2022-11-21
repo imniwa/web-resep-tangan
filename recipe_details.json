@@ -1,5 +1,6 @@
 {
     "recipe":{
+        "id":1,
         "title":"black hambuerger",
         "banner":{
             "path":"/arnold/black-hambuerger/YVouFdln0Nxy.jpeg"
@@ -12,6 +13,7 @@
             "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages."
         ], 
         "user":{
+            "id":1,
             "name":"Arnold Poernomo",
             "media":{
                 "path":"/arnold/4AAQSkZJRgABAQAAAQABAAD.jpeg"
@@ -19,12 +21,14 @@
         },
         "contents":[
             {
+                "id":1,
                 "step":"Iris tipis bawang putih dan bawang merah. Potong serong cabai rawit merah dan cabai keriting.",
                 "media":{
                     "path":"/arnold/black-hambuerger/step-1.jpeg"
                 }
             },
             {
+                "id":2,
                 "step":"Panaskan minyak, tumis bawang merah dan bawang putih hingga harum, kemudian tambahkan cabai dan tumis sebentar hingga layu.",
                 "media":{
                     "path":"/arnold/black-hambuerger/step-2.jpeg"

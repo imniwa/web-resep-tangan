@@ -2,10 +2,12 @@
     "result":[
         {
             "user":{
+                "id": 1,
                 "name":"arnold poernomo",
                 "username":"arnold"
             },
             "recipes":{
+                "id": 1,
                 "name": "membuat kangkung",
                 "rating": 4.5,
                 "views": 3000,
