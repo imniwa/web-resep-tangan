@@ -7,12 +7,18 @@ use App\Models\Rating;
 use App\Models\Recipes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RecipesController extends Controller
 {
+    private static $dir = 'recipes';
     public function __construct()
     {
+        if (!Storage::exists(self::$dir)) {
+            Storage::makeDirectory(self::$dir);
+        }
         $this->middleware('auth:api', ['except' => ['recipes']]);
     }
     public static function get($options = [])
@@ -70,12 +76,16 @@ class RecipesController extends Controller
     public function add_recipes(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|min:2|max:255'
+            'title' => 'required|string|min:2|max:64',
+            'banner' => ['required', File::image()->smallerThan((2 * 1024) - 64)],
+            'materials' => 'required|array'
         ]);
         $data = [
-            'title' => $request->title,
+            'title' => Str::lower($request->title),
             'description' => $request->description,
-            'user_id' => $request->user()->id
+            'user_id' => $request->user()->id,
+            'banner' => json_encode(FileController::move($request->file('banner'), self::$dir)),
+            'materials' => implode('\\n', $request->materials)
         ];
         $recipes = self::add($data);
         return new PostResponse(true, 'Recipes created successfully', $recipes);
@@ -88,13 +98,24 @@ class RecipesController extends Controller
         ]);
         $id = $request->id;
         $data = [];
-        if (isset($request->title) && $request->title != null) {
-            $data['title'] = $request->title;
+        foreach ($request->only(['title', 'description', 'banner', 'materials']) as $k => $d) {
+            if (isset($d) && $d != null) {
+                if ($k == 'materials') {
+                    $request->validate([
+                        'materials' => 'array'
+                    ]);
+                    $data[$k] = implode('\\n', $d);
+                } else if ($k == 'banner') {
+                    $request->validate([
+                        'banner' => ['required', File::image()->smallerThan((2 * 1024) - 64)],
+                    ]);
+                    $data[$k] = FileController::move($request->file('banner'), self::$dir);
+                } else {
+                    $data[$k] = $request->$d;
+                }
+            }
         }
-        if (isset($request->description) && $request->description != null) {
-            $data['description'] = $request->description;
-        }
-        $recipes = self::update($id, $data);
+        self::update($id, $data);
         return new PostResponse(true, 'Recipes successfully updated', self::get($id)[0]);
     }
 

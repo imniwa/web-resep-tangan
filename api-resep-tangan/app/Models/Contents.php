@@ -17,7 +17,7 @@ class Contents extends Model
     protected $fillable = [
         'recipe_id',
         'media',
-        'description',
+        'step',
     ];
 
     protected $casts = [

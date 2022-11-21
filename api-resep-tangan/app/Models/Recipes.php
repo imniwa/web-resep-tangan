@@ -16,8 +16,30 @@ class Recipes extends Model
     protected $fillable = [
         'title',
         'description',
-        'user_id'
+        'banner',
+        'materials',
+        'user_id',
     ];
+
+    protected $casts = [
+        'banner' => AsArrayObject::class
+    ];
+
+    /**
+     * This will be called when fetching the element.
+     */
+    public function getMediaAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * This will be called when storing/updating the element.
+     */
+    public function setMediaAttribute($value)
+    {
+        $this->attributes['banner'] = (string)$value;
+    }
 
     public function user()
     {

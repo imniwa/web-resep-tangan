@@ -25,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
+        'media'
     ];
 
     /**
@@ -44,7 +45,24 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'media' => AsArrayObject::class
     ];
+
+    /**
+     * This will be called when fetching the element.
+     */
+    public function getMediaAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * This will be called when storing/updating the element.
+     */
+    public function setMediaAttribute($value)
+    {
+        $this->attributes['media'] = (string)$value;
+    }
 
 
     /**

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('recipe_id')->constrained('recipes');
             $table->json('media');
-            $table->text('description');
+            $table->text('step');
             $table->timestamps();
         });
     }

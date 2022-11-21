@@ -10,7 +10,7 @@
             "views": 5000,
             "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
             "media":{
-                "dataUrl":"/arnold/tumis-kangkung/4AAQSkZJRgABAQAAAQABAAD.jpeg"
+                "path":"/arnold/tumis-kangkung/4AAQSkZJRgABAQAAAQABAAD.jpeg"
             }
         },
         {
@@ -19,7 +19,7 @@
             "views": 5000,
             "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
             "media":{
-                "dataUrl":"/arnold/black-burger/4AAQSkZJRgABAQAAAQABAAD.jpeg"
+                "path":"/arnold/black-burger/4AAQSkZJRgABAQAAAQABAAD.jpeg"
             }
         }
     ]

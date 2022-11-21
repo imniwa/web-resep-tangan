@@ -22,11 +22,6 @@ class ContentsController extends Controller
         $this->middleware('auth:api', ['except' => ['media']]);
     }
 
-    public static function getDir()
-    {
-        return storage_path('app/' . self::$dir);
-    }
-
     public static function get($recipes_id = null, $id = null)
     {
         if ($recipes_id) {
@@ -69,22 +64,13 @@ class ContentsController extends Controller
         $request->validate([
             'recipe_id' => 'required',
             'media' => 'required|file|mimetypes:image/jpg,image/png,image/jpeg',
-            'description' => 'required|string'
+            'step' => 'required|string'
         ]);
         $file = $request->file('media');
-        $basename = strtotime(now()) . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-        $file = $file->move(self::getDir(), $basename);
-        $media = [
-            'basename' => $basename,
-            'path' => self::$dir . '/' . $basename,
-            'mimeType' => $file->getMimeType(),
-            'extension' => $file->getExtension(),
-            'size' => $file->getSize(),
-        ];
         $data = [
             'recipe_id' => $request->recipe_id,
-            'media' => json_encode($media),
-            'description' => $request->description
+            'media' => json_encode(FileController::move($file, self::$dir)),
+            'step' => $request->step
         ];
         return new PostResponse(true, resource: self::add($data));
     }
@@ -100,21 +86,10 @@ class ContentsController extends Controller
         $data = [];
         $file = $request->file('media');
         if ($file) {
-            $basename = strtotime(now()) . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-            $file = $file->move(self::getDir(), $basename);
-            $media = [
-                'basename' => $basename,
-                'path' => self::$dir . '/' . $basename,
-                'mimeType' => $file->getMimeType(),
-                'extension' => $file->getExtension(),
-                'size' => $file->getSize(),
-            ];
-            if ($request->media) {
-                $data['media'] = json_encode($media);
-            }
+            $data['media'] = json_encode(FileController::move($file, self::$dir));
         }
-        if ($request->description) {
-            $data['description'] = $request->description;
+        if ($request->step) {
+            $data['step'] = $request->step;
         }
         self::update($request->id, $data);
         return new PostResponse(true, 'Contents updated', self::get(id: $request->id));

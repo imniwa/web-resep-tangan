@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title', 128);
             $table->text('description');
+            $table->json('banner');
+            $table->text('materials');
             $table->foreignId('user_id')
                 ->constrained('users');
             $table->timestamps();
