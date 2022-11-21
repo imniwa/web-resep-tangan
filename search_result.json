@@ -1,0 +1,18 @@
+{
+    "result":[
+        {
+            "user":{
+                "name":"arnold poernomo",
+                "username":"arnold"
+            },
+            "recipes":{
+                "name": "membuat kangkung",
+                "rating": 4.5,
+                "views": 3000,
+                "media":{
+                    "dataUrl":"YVouFdln0Nxy.jpeg"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "user":{
+        "name":"arnold poernomo",
+        "username":"arnold"
+    },
+    "recipes":[
+        {
+            "name":"tumis kangkung",
+            "rating": 4.2,
+            "views": 5000,
+            "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
+            "media":{
+                "dataUrl":"/arnold/tumis-kangkung/4AAQSkZJRgABAQAAAQABAAD.jpeg"
+            }
+        },
+        {
+            "name":"black burger",
+            "rating": 4.2,
+            "views": 5000,
+            "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
+            "media":{
+                "dataUrl":"/arnold/black-burger/4AAQSkZJRgABAQAAAQABAAD.jpeg"
+            }
+        }
+    ]
+}
