@@ -5,7 +5,11 @@ export default function User() {
   return (
     <div className="grid grid-rows-2 grid-flow-col">
       <div className="image row-span-2 col-span-1 rounded-full border-primary">
-        <img src={Arnold} alt={`Arnold Poernomo`} />
+        <img
+          src={Arnold}
+          alt={`Arnold Poernomo`}
+          className="h-10 w-10 rounded-full"
+        />
       </div>
       <div className="box col-span-5">
         <div className="name text-xs font-medium font-sans">{`Arnold  Poernomo`}</div>
