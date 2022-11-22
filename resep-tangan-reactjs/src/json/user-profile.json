@@ -1,29 +1,49 @@
 {
-    "user":{
-        "id":1,
-        "name":"arnold poernomo",
-        "username":"arnold"
+  "user": {
+    "id": 1,
+    "name": "arnold poernomo",
+    "username": "arnold"
+  },
+  "recipes": [
+    {
+      "id": 1,
+      "name": "Tumis Kangkung",
+      "rating": 4.2,
+      "views": 5000,
+      "description": "Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
+      "media": {
+        "path": "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/17ea3056-4e78-4d25-bd54-cf3a9296188b.jpg"
+      }
     },
-    "recipes":[
-        {
-            "id":1,
-            "name":"tumis kangkung",
-            "rating": 4.2,
-            "views": 5000,
-            "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
-            "media":{
-                "path":"/arnold/tumis-kangkung/4AAQSkZJRgABAQAAAQABAAD.jpeg"
-            }
-        },
-        {
-            "id":1,
-            "name":"black burger",
-            "rating": 4.2,
-            "views": 5000,
-            "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
-            "media":{
-                "path":"/arnold/black-burger/4AAQSkZJRgABAQAAAQABAAD.jpeg"
-            }
-        }
-    ]
+    {
+      "id": 2,
+      "name": "Black Hamburger",
+      "rating": 5.0,
+      "views": 1200,
+      "description": "Seperti namanya, keunikannya terletak pada bun alias roti pada burger yang...",
+      "media": {
+        "path": "https://api.time.com/wp-content/uploads/2015/09/black-burger-king-halloween-whopper.jpg"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Chicken Finger",
+      "rating": 2.5,
+      "views": 3200,
+      "description": "Seperti namanya, keunikannya terletak pada bun alias roti pada burger yang...",
+      "media": {
+        "path": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/4/2/2/LS-Library_Crispy-Chicken-Fingers_s4x3.jpg.rend.hgtvcom.616.462.suffix/1522712909693.jpeg"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Omelet Mie",
+      "rating": 3.9,
+      "views": 4050,
+      "description": "Mie instan sering disebut kurang sehat karena tinggi garam dan hanya mengandung karbohidray saja...",
+      "media": {
+        "path": "https://www.frisianflag.com/storage/app/media/uploaded-files/omelete-mie-telur.jpg"
+      }
+    }
+  ]
 }

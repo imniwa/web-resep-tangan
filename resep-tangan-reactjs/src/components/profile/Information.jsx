@@ -7,7 +7,7 @@ function Information({
   title,
   banner,
   rating,
-  view,
+  views,
   description,
   userImage,
   username,
@@ -56,7 +56,7 @@ function Information({
           {/* view */}
           <div className="box-view view flex gap-2 items-center">
             <Icon icon="akar-icons:eye" className="w-3 h-3" />
-            <p className="text-[8px] italic font-sans">{view}</p>
+            <p className="text-[8px] italic font-sans">{views}</p>
           </div>
           {/* user */}
           <div className="user flex items-center gap-2">

@@ -1,39 +1,68 @@
 {
-    "recipe":{
-        "id":1,
-        "title":"black hambuerger",
-        "banner":{
-            "path":"/arnold/black-hambuerger/YVouFdln0Nxy.jpeg"
-        },
-        "description":"Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
-        "materials":[
-            "Lorem Ipsum has been the industry's standard dummy text ever.",
-            "It has survived not only five centuries, but also the leap into electronic typesetting.",
-            "Remaining essentially unchanged.",
-            "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages."
-        ], 
-        "user":{
-            "id":1,
-            "name":"Arnold Poernomo",
-            "media":{
-                "path":"/arnold/4AAQSkZJRgABAQAAAQABAAD.jpeg"
-            }
-        },
-        "contents":[
-            {
-                "id":1,
-                "step":"Iris tipis bawang putih dan bawang merah. Potong serong cabai rawit merah dan cabai keriting.",
-                "media":{
-                    "path":"/arnold/black-hambuerger/step-1.jpeg"
-                }
-            },
-            {
-                "id":2,
-                "step":"Panaskan minyak, tumis bawang merah dan bawang putih hingga harum, kemudian tambahkan cabai dan tumis sebentar hingga layu.",
-                "media":{
-                    "path":"/arnold/black-hambuerger/step-2.jpeg"
-                }
-            }
-        ]
-    }
+  "recipe": {
+    "id": 1,
+    "title": "Cah kangkung cumi",
+    "banner": {
+      "path": "https://img-global.cpcdn.com/recipes/11d7f40ab6bf3257/680x482cq70/cah-kangkung-cumi-foto-resep-utama.webp"
+    },
+    "description": "Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah.",
+    "materials": [
+      "500 gram kangkung",
+      "250 gram cumi",
+      "1 buah tomat, potong²",
+      "1 sdm saos tiram",
+      "1/2 bawang bombai iris",
+      "Garam dan penyedap",
+      "Bumbu uleg kasar :",
+      "6 siung bawang putih",
+      "1 kemiri sangrai",
+      "3 buah cabe keriting (skip)",
+      "10 buah cabe rawit"
+    ],
+    "user": {
+      "id": 1,
+      "name": "Corina Masruroh",
+      "media": {
+        "path": "https://img-global.cpcdn.com/users/15d4df16de07b71e/108x108cq50/avatar.webp"
+      }
+    },
+    "contents": [
+      {
+        "id": 1,
+        "step": "Potong² kangkung, bersihkan cumi, iris bulat",
+        "media": {
+          "path": [""]
+        }
+      },
+      {
+        "id": 2,
+        "step": "Panaskan minyak, gpreng cumi selama 3menit. Tiriskan",
+        "media": {
+          "path": [
+            "https://img-global.cpcdn.com/steps/aaa18f205de7b8e2/160x128cq70/cah-kangkung-cumi-langkah-memasak-2-foto.webp"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "step": "Tumis bumbu uleg, bombai dan tomat sampai harum (dengan api besar) Masukkan kangkung dan cumi. Bumbui saos tiram, haram dan penyedap. Tes rasa. Angkat",
+        "media": {
+          "path": [
+            "https://img-global.cpcdn.com/steps/c92f4b0e36ee5bac/160x128cq70/cah-kangkung-cumi-langkah-memasak-3-foto.webp",
+            "https://img-global.cpcdn.com/steps/f290d491d744e36f/160x128cq70/cah-kangkung-cumi-langkah-memasak-3-foto.webp",
+            "https://img-global.cpcdn.com/steps/cefa53c647f44e51/160x128cq70/cah-kangkung-cumi-langkah-memasak-3-foto.webp"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "step": "Sajikan",
+        "media": {
+          "path": [
+            "https://img-global.cpcdn.com/steps/6ca4bcd803f25b79/160x128cq70/cah-kangkung-cumi-langkah-memasak-4-foto.webp"
+          ]
+        }
+      }
+    ]
+  }
 }

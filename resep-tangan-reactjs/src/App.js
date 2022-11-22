@@ -7,6 +7,7 @@ import Me from "./pages/Me";
 import Password from "./pages/Password";
 import Refresh from "./pages/Refresh";
 import Register from "./pages/Register";
+import Recipes from "./pages/Recipes";
 // import Navbar from "./components/Navbar";
 function App() {
   // const navbarHide = () => {};
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/logout" element={<Logout />} />
         <Route exact path="/password" element={<Password />} />
+        <Route exact path="/recipes" element={<Recipes />} />
         <Route exact path="/me" element={<Me />} />
       </Routes>
       {/* <Navbar /> */}

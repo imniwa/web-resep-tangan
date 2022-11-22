@@ -1,8 +1,7 @@
 import React from "react";
-import Arnold from "../../assets/arnold.png";
 import { Icon } from "@iconify/react";
 
-function Header() {
+function Header({ username, userImage }) {
   return (
     <header className="py-2 border-b-2 border-primary top-0 sticky bg-white">
       <div className="container flex justify-between items-center">
@@ -11,11 +10,11 @@ function Header() {
           className=" border-primary rounded-full text-primary h-8 w-8 cursor-pointer"
         />
         <div className="user flex items-center gap-3">
-          <p className="font-inter font-medium">Arnold Poernomo</p>
+          <p className="font-inter font-medium">{username}</p>
           <div className="image">
             <img
-              src={Arnold}
-              alt={`Arnold Poernomo`}
+              src={userImage}
+              alt={username}
               className="h-10 w-10 rounded-full cursor-pointer"
             />
           </div>
