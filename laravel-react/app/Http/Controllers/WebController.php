@@ -12,8 +12,13 @@ class WebController extends Controller
         return Inertia::render('Home');
     }
 
-    public function search(Request $request, $query = null)
+    public function search(Request $request)
     {
-        return Inertia::render('SearchResult');
+        if ($request->all() != null) {
+            $query = $request->only('query');
+        }
+        return Inertia::render('SearchResult', [
+            'data' => isset($query) ? $query : null
+        ]);
     }
 }

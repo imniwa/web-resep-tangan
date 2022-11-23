@@ -4,7 +4,7 @@ import TextInput from '../TextInput';
 
 export default function Navbar(props) {
     const [expanded, setExpanded] = useState(false);
-    const { data, setData, get, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         query: ''
     });
 
@@ -19,17 +19,17 @@ export default function Navbar(props) {
 
     const submit = (event) => {
         event.preventDefault();
-        get('/search/')
+        post('/search/')
     }
 
     return (
         <nav className="border-gray-200 px-2 sm:px-4 py-2.5 bg-white border-b border-b-primary shadow-sm">
             <div className="container flex flex-wrap items-center justify-between mx-auto">
-                <a href={route('home')} className="flex items-center">
+                <Link href={route('home')} className="flex items-center">
                     <span className="self-center text-xl font-bold whitespace-nowrap text-primary">
                         Resep Tangan
                     </span>
-                </a>
+                </Link>
                 <div className="flex md:order-2">
                     <Link href={route('register')} className="text-primary font-bold hover:underline px-6 py-3 mr-4">Daftar</Link>
                     <Link
