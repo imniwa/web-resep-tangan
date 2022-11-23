@@ -2,12 +2,14 @@ import React, { useRef } from 'react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import { useDraggable } from "react-use-draggable-scroll";
+import { Head } from '@inertiajs/inertia-react';
 
 export default function Home(props) {
     const ref = useRef();
     const { events } = useDraggable(ref);
     return (
         <>
+            <Head title="Home"/>
             <Navbar />
             <div className="container px-8 mx-auto pt-6">
                 <div id="top-user">

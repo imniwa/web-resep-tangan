@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useForm } from '@inertiajs/inertia-react';
+import React, { useState } from 'react';
+import { Link, useForm } from '@inertiajs/inertia-react';
 import TextInput from '../TextInput';
 
 export default function Navbar(props) {
@@ -26,18 +26,18 @@ export default function Navbar(props) {
         <nav className="border-gray-200 px-2 sm:px-4 py-2.5 bg-white border-b border-b-primary shadow-sm">
             <div className="container flex flex-wrap items-center justify-between mx-auto">
                 <a href={route('home')} className="flex items-center">
-                    <span className="self-center text-xl font-medium whitespace-nowrap text-primary">
+                    <span className="self-center text-xl font-bold whitespace-nowrap text-primary">
                         Resep Tangan
                     </span>
                 </a>
                 <div className="flex md:order-2">
-                    <a href={route('register')} className="text-primary font-bold hover:underline px-6 py-3 mr-4">Daftar</a>
-                    <a
+                    <Link href={route('register')} className="text-primary font-bold hover:underline px-6 py-3 mr-4">Daftar</Link>
+                    <Link
                         className="text-white leading-7 font-bold bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
                         href={route('login')}
                     >
                         Masuk
-                    </a>
+                    </Link>
                     <button type="button" className="inline-flex items-center p-2 text-sm text-primary rounded-lg md:hidden hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary"
                         onClick={showNavigation}>
                         <span className="sr-only">Open main menu</span>
@@ -59,7 +59,7 @@ export default function Navbar(props) {
                                     placeholder="Search..."
                                     handleChange={(e) => setData('query', e.target.value)}
                                 />
-                                <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2">
+                                <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2">
                                     Search
                                 </button>
                             </div>
