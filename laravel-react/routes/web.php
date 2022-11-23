@@ -46,6 +46,7 @@ Route::group([
     'prefix' => 'user',
     'controller' => UserController::class
 ], function () {
+    Route::get('/upload-recipe', 'upload')->name('upload');
     Route::get('/{username}', 'show')->name('user');
 });
 

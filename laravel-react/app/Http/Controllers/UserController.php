@@ -15,4 +15,9 @@ class UserController extends Controller
             'username' => $username
         ]);
     }
+
+    public function upload()
+    {
+        return Inertia::render('UploadRecipe');
+    }
 }
