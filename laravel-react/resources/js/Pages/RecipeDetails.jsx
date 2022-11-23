@@ -39,8 +39,6 @@ export default function RecipeDetails(props) {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="px-8">
                         <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
                         <p className="font-light text-gray-500 mb-4">Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah. </p>
                         <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
@@ -69,7 +67,9 @@ export default function RecipeDetails(props) {
                             </button>
 
                         </div>
-                        <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
+                    </div>
+                    <div className="px-8">
+                        <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8 md:hidden" />
                         <h6 className="font-meium underline mb-4">Langkah - langkah</h6>
                         <ol className="relative border-l border-gray-200">
 
