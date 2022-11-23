@@ -117,13 +117,12 @@ export default function Register() {
                 </div>
 
                 <div className="relative mb-6">
-                    <button type="button" className="text-white bg-primary w-full hover:bg-orange-400 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">
+                    <button type="button" className="text-white bg-primary w-full hover:bg-orange-400 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">
                         Daftar
                     </button>
-                    <div className="flex items-center my-2">
-                        <hr className="ml-4 mr-2 w-3/4 h-[0.1rem] bg-gray-300 rounded border-0" />
-                        <span className="text-sm text-gray-600">atau</span>
-                        <hr className="mr-4 ml-2 w-3/4 h-[0.1rem] bg-gray-300 rounded border-0" />
+                    <div className="inline-flex justify-center items-center w-full">
+                        <hr className="my-8 w-64 h-px bg-gray-200 border-0" />
+                            <span className="absolute left-1/2 px-3 font-thin text-gray-400 bg-white -translate-x-1/2">atau</span>
                     </div>
                     <Link href={route('login')}>
                         <button type="button" className="text-white bg-gray-800 w-full hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">
