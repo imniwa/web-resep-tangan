@@ -123,16 +123,19 @@ export default function RecipeDetails(props) {
                     </form>
                     <hr className="my-4 h-px bg-gray-200 border-0" />
                     <div className="grid gap-8">
-                        <div className="flex items-center space-x-4 w-full border px-4 py-2 rounded">
-                            <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
-                            <div className="font-medium">
-                                <div>Jese Leos</div>
-                                <div className="text-sm text-gray-500 mt-4">
-                                    <textarea id="message" rows="4"
-                                        className="block p-2.5 w-full text-sm text-gray-900 rounded border-none focus:ring-0 focus:border-inherit resize-none"
-                                        value="this is my comment"
-                                        readOnly
-                                    />
+                        <div className=" w-full border px-4 py-2 rounded">
+                            <div className="grid">
+                                <div className="flex space-x-4">
+                                    <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
+                                    <div className="font-medium">
+                                        <div>Jese Leos <span className="text-sm text-gray-500">@jeseleos</span></div>
+                                        <div class="text-xs text-gray-400">9 Hari yang lalu</div>
+                                    </div>
+                                </div>
+                                <div className="text-sm text-gray-500 mt-4 mb-2">
+                                    <p>
+                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas quisquam consequatur excepturi commodi repellendus provident, aut culpa odit assumenda nihil possimus laborum dolores, laboriosam aspernatur maxime obcaecati asperiores corrupti eligendi.
+                                    </p>
                                 </div>
                             </div>
                         </div>

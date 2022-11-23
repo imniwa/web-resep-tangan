@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Rating(props) {
-    const [rate,setRate] = useState(0);
-    const { max } = props;
+    const { max,currentRate } = props;
+    const [rate,setRate] = useState(currentRate == null ? 0 : currentRate);
     const star = [];
     for (let i = 0; i < max; i++) {
         star.push(i+1);
@@ -21,7 +21,6 @@ export default function Rating(props) {
         })
     }
     useEffect(() => {
-        console.log(rate);
         updateStar()
     },[rate]);
     return (
