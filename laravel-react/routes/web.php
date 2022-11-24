@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
@@ -20,19 +21,22 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
-Route::controller(WebController::class)->group(function () {
-    Route::get('/', 'home')->name('home');
-    Route::get('/search', 'search')->name('search');
-    Route::post('/search', 'search');
+Route::group([
+    'prefix' => '/'
+], function () {
+
+    Route::controller(WebController::class)->group(function () {
+        Route::get('/', 'home')->name('home');
+        Route::get('/search', 'search')->name('search');
+        Route::post('/search', 'search');
+    });
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/login', 'login')->name('login');
+        Route::get('/register', 'register')->name('register');
+        Route::post('/register', 'register');
+    });
 });
 
 Route::group([
@@ -49,15 +53,3 @@ Route::group([
     Route::get('/upload-recipe', 'upload')->name('upload');
     Route::get('/{username}', 'show')->name('user');
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';

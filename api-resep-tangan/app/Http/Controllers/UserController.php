@@ -11,6 +11,9 @@ class UserController extends Controller
     public function user($username)
     {
         $user = User::where('username', $username)->first();
+        if ($user == null) {
+            return new PostResponse(false);
+        }
         $user = User::findOrFail($user->id);
         $user->recipes = $user->recipes()->get();
         $user->followers = Follows::where('follow', $user->id)->count();

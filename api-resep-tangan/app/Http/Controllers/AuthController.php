@@ -15,7 +15,7 @@ class AuthController extends Controller
     private static $dir = 'users';
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'email_check']]);
     }
     public function login(Request $request)
     {
@@ -41,13 +41,29 @@ class AuthController extends Controller
         ]);
     }
 
+    public function email_check(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|string|email|max:255|unique:users',
+            ]);
+            return new PostResponse(true, 'The email available.');
+        } catch (\Exception $e) {
+            return new PostResponse(false, $e->getMessage());
+        }
+    }
+
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+            ]);
+        } catch (\Exception $e) {
+            return new PostResponse(false, $e->getMessage());
+        }
 
         $pos = strpos($request->email, '@');
         $username = Str::substr($request->email, 0, $pos);

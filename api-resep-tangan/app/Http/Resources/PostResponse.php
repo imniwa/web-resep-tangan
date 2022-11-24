@@ -20,7 +20,7 @@ class PostResponse extends JsonResource
     public function __construct($status, $message = null, $resource = null)
     {
         parent::__construct($resource);
-        $this->status  = $status ? 'success' : 'failed';
+        $this->status  = $status;
         $this->message = $message;
     }
 

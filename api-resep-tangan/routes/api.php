@@ -32,6 +32,7 @@ Route::group([
     Route::post('/register', 'register')->name('register');
     Route::post('/logout', 'logout')->name('logout');
     Route::post('/update', 'update')->name('update');
+    Route::post('/email-checker', 'email_check');
 });
 
 // domain/api/recipes
