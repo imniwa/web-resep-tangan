@@ -15,7 +15,7 @@ class AuthController extends Controller
     private static $dir = 'users';
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'email_check']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'email_check', 'token_validation']]);
     }
     public function login(Request $request)
     {
@@ -107,6 +107,11 @@ class AuthController extends Controller
             Auth::logout();
         }
         return new PostResponse(true, resource: $user);
+    }
+
+    public function token_validation(Request $request)
+    {
+        return new PostResponse(Auth::check());
     }
 
     public function logout()

@@ -15,12 +15,12 @@ class Controller extends BaseController
      * @param string $token
      * @return \GuzzleHttp\Client
      */
-    public static function api($token = '')
+    public static function api($token = false)
     {
         return new \GuzzleHttp\Client([
-            'base_uri' => env('API_URL') . '/',
-            'headers' => $token ? [
-                'Authorization' => 'Bearer ' . $token
+            'base_uri' => env('API_URL') . "/api/",
+            'headers' => session('token') && $token ? [
+                'Authorization' => 'Bearer ' . session('token')
             ] : []
         ]);
     }

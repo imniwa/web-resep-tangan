@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
+use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ use Inertia\Inertia;
 |
 */
 
-
+// domain.com/
 Route::group([
     'prefix' => '/'
 ], function () {
@@ -29,27 +30,34 @@ Route::group([
     Route::controller(WebController::class)->group(function () {
         Route::get('/', 'home')->name('home');
         Route::get('/search', 'search')->name('search');
-        Route::post('/search', 'search');
+        Route::get('/search/{query}', 'search');
     });
 
     Route::controller(AuthController::class)->group(function () {
         Route::get('/login', 'login')->name('login');
+        Route::post('/login', 'login');
         Route::get('/register', 'register')->name('register');
         Route::post('/register', 'register');
+        Route::get('/logout', 'logout')->name('logout');
+    });
+
+    Route::group([
+        'controller' => UserController::class
+    ], function () {
+        Route::middleware(EnsureTokenIsValid::class)->group(function () {
+            Route::get('/me', 'user')->name('profile');
+            Route::get('/settings', 'settings')->name('settings');
+            Route::get('/upload-recipe', 'upload')->name('upload');
+        });
+        Route::get('/{username}', 'show')->name('user');
+        Route::get('/{username}/{title}', 'show')->name('user-recipe');
     });
 });
 
+// domain.com/recipe
 Route::group([
     'prefix' => 'recipe',
     'controller' => RecipeController::class
 ], function () {
     Route::get('/{title}', 'show')->name('recipe');
-});
-
-Route::group([
-    'prefix' => 'user',
-    'controller' => UserController::class
-], function () {
-    Route::get('/upload-recipe', 'upload')->name('upload');
-    Route::get('/{username}', 'show')->name('user');
 });

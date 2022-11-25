@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +15,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $faker = Faker::create('id_ID');
+        $faker->addProvider(new \FakerRestaurant\Provider\id_ID\Restaurant($faker));
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        for ($i = 0; $i < 20; $i++) {
+            \App\Models\User::factory()->create([
+                'name' => $faker->name(),
+                'email' => $faker->unique()->safeEmail(),
+                'username' => $faker->unique()->userName(),
+            ]);
+        }
+        for ($i = 0; $i < 20; $i++) {
+            \App\Models\Recipes::factory()->create([
+                'title' => $faker->foodName(),
+                'description' => $faker->text(),
+                'materials' => implode('\\n', (array)$faker->sentences($nb = 3, $asText = false)),
+                'user_id' => $i + 1,
+            ]);
+        }
     }
 }

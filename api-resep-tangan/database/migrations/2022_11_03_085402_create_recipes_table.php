@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('banner');
             $table->text('materials');
             $table->foreignId('user_id')
-                ->constrained('users');
+                ->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

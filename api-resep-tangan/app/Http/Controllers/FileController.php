@@ -16,12 +16,12 @@ class FileController extends Controller
     {
         $basedir = $dir;
         if ($dir == null) {
-            $dir = storage_path('app/');
+            $dir = storage_path('app/public/');
         } else {
-            if (!Storage::exists($dir)) {
-                Storage::makeDirectory($dir);
+            if (!Storage::exists('public/' . $dir)) {
+                Storage::makeDirectory('public/' . $dir);
             }
-            $dir = storage_path('app/' . $dir);
+            $dir = storage_path('app/public/' . $dir);
         }
         $basename = strtotime(now()) . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
         $file = $file->move($dir, $basename);

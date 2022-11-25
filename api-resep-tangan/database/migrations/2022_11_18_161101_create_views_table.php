@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('views', function (Blueprint $table) {
             $table->id();
             $table->foreignId('recipe_id')
-                ->constrained('recipes');
+                ->constrained('recipes')->onDelete('cascade');
             $table->string('token')->unique();
             $table->timestamps();
         });

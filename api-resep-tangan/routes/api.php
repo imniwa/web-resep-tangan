@@ -4,10 +4,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContentsController;
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewsController;
+use App\Http\Middleware\EnsureJWT;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +35,7 @@ Route::group([
     Route::post('/logout', 'logout')->name('logout');
     Route::post('/update', 'update')->name('update');
     Route::post('/email-checker', 'email_check');
+    Route::get('/is-valid-token', 'token_validation');
 });
 
 // domain/api/recipes
@@ -40,11 +43,6 @@ Route::group([
     'prefix' => 'recipes',
     'controller' => RecipesController::class
 ], function () {
-    Route::get('/', 'recipes')->name('get_recipes');
-    Route::post('/', 'add_recipes');
-    // Route::put('/', 'update_recipes');
-    Route::delete('/', 'delete_recipes');
-
     // domain/api/recipes/views
     Route::group([
         'prefix' => 'views',
@@ -84,6 +82,14 @@ Route::group([
         Route::post('/', 'add_comment');
         Route::delete('/', 'delete_comment');
     });
+
+    // base
+    Route::post('/add', 'add_recipes');
+    // Route::put('/', 'update_recipes');
+    Route::delete('/delete', 'delete_recipes');
+    Route::get('/top', 'top')->name('top_recipes');
+    Route::get('/{title}', 'search');
+    Route::get('/{username}/{title}', 'recipes')->name('get_recipes');
 });
 
 
@@ -92,6 +98,7 @@ Route::group([
     'prefix' => 'user',
     'controller' => UserController::class
 ], function () {
+    Route::get('/top', 'top');
     Route::get('/{username}', 'user');
     Route::get('/{username}/followers', 'followers');
     Route::get('/{username}/following', 'following');

@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
 use App\Models\Follows;
+use App\Models\Recipes;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    public function top()
+    {
+        $user = User::all()->take(10);
+        return new PostResponse(true, resource: $user);
+    }
+
     public function user($username)
     {
         $user = User::where('username', $username)->first();
@@ -15,7 +24,7 @@ class UserController extends Controller
             return new PostResponse(false);
         }
         $user = User::findOrFail($user->id);
-        $user->recipes = $user->recipes()->get();
+        $user->recipes = Recipes::where('user_id', $user->id)->get();
         $user->followers = Follows::where('follow', $user->id)->count();
         $user->following = Follows::where('id_user', $user->id)->count();
         return new PostResponse(true, resource: $user);

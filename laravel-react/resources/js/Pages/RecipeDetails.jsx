@@ -1,70 +1,75 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import Rating from '@/Components/Rating';
 import { Link, Head, usePage } from '@inertiajs/inertia-react';
+import { BASE_STORAGE_API_URL } from '@/assets/config';
 
 
 export default function RecipeDetails(props) {
-    const { title } = usePage().props;
-    const userHref = '#';
+    const { data } = usePage().props;
+
     const handleCheckbox = (e) => {
+        e.currentTarget.classList.toggle('line-through')
         const target = e.target.querySelector('input')
         if (target != null) {
             target.checked = !target.checked
         }
     }
+
     return (
         <>
-            <Head title={title.toProperCase()} />
+            <Head title={data.title} />
             <Navbar />
             <div className="container mx-auto min-h-screen my-8">
                 <div className="flex flex-col md:flex-row">
                     <div className="px-8">
-                        <h1 className="text-center text-xl font-bold mb-4">Tumis kangkung</h1>
+                        <h1 className="text-center text-xl font-bold mb-4">{data.title}</h1>
                         <div className="h-44 overflow-hidden rounded">
-                            <img className="w-full object-cover mt-[-10%]" src="https://flowbite.com/docs/images/blog/image-1.jpg" alt="image description" />
+                            <img className="w-full object-cover mt-[-10%]" 
+                            src={`${BASE_STORAGE_API_URL}/${data.banner.path}`} 
+                            alt="image description" />
                         </div>
                         <div className="flex items-center space-x-4 my-2">
-                            <Link href={userHref}>
-                                <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" />
+                            <Link href={route('user',{'username':data.user.username})}>
+                                <img className="w-10 h-10 rounded-full" 
+                                    src={`${BASE_STORAGE_API_URL}/${data.user.media.path}`} />
                             </Link>
                             <div className="font-medium">
                                 <div>
-                                    <Link href={userHref} className="text-lg font-medium">Jese Leos</Link>
+                                    <Link href={route('user',{'username':data.user.username})} className="text-lg font-medium capitalize">{data.user.name}</Link>
                                 </div>
                                 <div className="flex items-center">
-                                    <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                    <p className="ml-2 text-sm font-bold text-gray-900">4.95</p>
+                                    <svg aria-hidden="true" className={`w-5 h-5 ${data.rating == 0 ? 'text-gray-400' : 'text-yellow-400'}`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <p className="ml-2 text-sm font-bold text-gray-900">{data.rating}</p>
                                 </div>
                             </div>
                         </div>
                         <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
-                        <p className="font-light text-gray-500 mb-4">Kangkung si sayuran hijau yang tak hanya banyak manfaat tapi juga mudah diolah. </p>
+                        <p className="font-light text-gray-500 mb-4 max-w-lg text-justify">
+                            {data.description}
+                        </p>
                         <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
                         <h6 className="font-medium underline mb-4">Bahan - bahan:</h6>
                         <div className="w-full text-gray-900 bg-white rounded-lg border border-gray-200">
 
-                            <button
-                                type="button"
-                                className="inline-flex relative items-center py-2 px-4 w-full text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:ring-0"
-                                onClick={handleCheckbox}>
-                                <input
-                                    type="checkbox"
-                                    className="mr-2 w-4 h-4 text-orange-600 bg-gray-100 rounded border-gray-300 focus:ring-0"
-                                />
-                                Tomat 4 kg
-                            </button>
-                            <button
-                                type="button"
-                                className="inline-flex relative items-center py-2 px-4 w-full text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:ring-0"
-                                onClick={handleCheckbox}>
-                                <input
-                                    type="checkbox"
-                                    className="mr-2 w-4 h-4 text-orange-600 bg-gray-100 rounded border-gray-300 focus:ring-0"
-                                />
-                                Selada 4 kg
-                            </button>
+                            {
+                                data.materials.map((e, i) => {
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={i}
+                                            className="inline-flex relative items-center py-2 px-4 w-full text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:ring-0"
+                                            onClick={handleCheckbox}>
+                                            <input
+                                                type="checkbox"
+                                                className="mr-2 w-4 h-4 text-orange-600 bg-gray-100 rounded border-gray-300 focus:ring-0"
+                                            />
+                                            {e}
+                                        </button>
+                                    )
+                                })
+                            }
 
                         </div>
                     </div>
@@ -129,7 +134,7 @@ export default function RecipeDetails(props) {
                                     <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
                                     <div className="font-medium">
                                         <div>Jese Leos <span className="text-sm text-gray-500">@jeseleos</span></div>
-                                        <div class="text-xs text-gray-400">9 Hari yang lalu</div>
+                                        <div className="text-xs text-gray-400">9 Hari yang lalu</div>
                                     </div>
                                 </div>
                                 <div className="text-sm text-gray-500 mt-4 mb-2">

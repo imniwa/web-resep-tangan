@@ -3,13 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        return Inertia::render('Auth/Login');
+        switch ($request->method()) {
+            case 'GET':
+                return Inertia::render('Auth/Login');
+                break;
+            case 'POST':
+                $res = $this->api()->request('POST', 'auth/email-checker', [
+                    'form_params' => $request->only(['email'])
+                ]);
+                $res = json_decode($res->getBody()->getContents());
+                if ($res->status) {
+                    return redirect()->back()->withErrors(['email' => "Email tidak terdaftar."]);
+                }
+                $data = $request->only(['email', 'password']);
+                $res = $this->api()->request('POST', 'auth/login', [
+                    'form_params' => $data
+                ]);
+                $res = json_decode($res->getBody()->getContents());
+                if ($res->status) {
+                    Session::put(['user' => $res->data->user]);
+                    Session::put(['token' => $res->data->authorization->token]);
+                    return redirect()->route('home');
+                }
+                return redirect()->back()->withErrors(['message' => "Login gagal."]);
+                break;
+            default:
+                return Inertia::render('Auth/Login');
+                break;
+        }
     }
 
     public function register(Request $request)
@@ -19,11 +47,6 @@ class AuthController extends Controller
                 return Inertia::render('Auth/Register');
                 break;
             case 'POST':
-                $request->validate([
-                    'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255',
-                    'password' => 'required|string|min:6',
-                ]);
                 $res = $this->api()->request('POST', 'auth/email-checker', [
                     'form_params' => $request->only(['email'])
                 ]);
@@ -44,7 +67,14 @@ class AuthController extends Controller
                 }
                 return redirect()->back()->with(['message' => "Akun berhasil dibuat."]);
             default:
+                return Inertia::render('Auth/Register');
                 break;
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->flush();
+        return redirect()->route('login');
     }
 }

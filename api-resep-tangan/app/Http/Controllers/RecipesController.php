@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResponse;
 use App\Models\Rating;
 use App\Models\Recipes;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class RecipesController extends Controller
@@ -16,27 +17,28 @@ class RecipesController extends Controller
     private static $dir = 'recipes';
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['recipes']]);
+        $this->middleware('auth:api', ['except' => ['recipes', 'top', 'search']]);
     }
     public static function get($options = [])
     {
         $id = isset($options['id']) ? $options['id'] : null;
         $title = isset($options['title']) ? $options['title'] : null;
-        if ($id) {
+        $username = isset($options['username']) ? $options['username'] : null;
+        if ($title && $username) {
+            $user_id = User::where('username', $username)->first()->id;
+            $recipes = Recipes::where([
+                ['title', 'like', '%' . Str::replace('-', ' ', $title) . '%'],
+                ['user_id', $user_id]
+            ])->get();
+        } else if ($id) {
             $recipes = Recipes::where('id', $id)->get();
         } else if ($title) {
-            $recipes = Recipes::where('title', 'like', '%' . $title . '%')->get();
+            $recipes = Recipes::where('title', 'like', '%' . Str::replace('-', ' ', $title) . '%')->get();
         } else {
             $recipes = Recipes::all();
         }
         foreach ($recipes as $recipe) {
-            $r = Recipes::findOrFail($recipe->id);
-            $recipe->materials = explode('\\n', $r->materials);
-            $recipe->views = $r->views()->count();
-            $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
-            $recipe->user = $r->user()->first();
-            $recipe->contents = $r->contents()->get();
-            $recipe->comments = $r->comments()->get();
+            self::detailed($recipe);
         }
         return $recipes;
     }
@@ -52,23 +54,50 @@ class RecipesController extends Controller
     {
         return Recipes::where('id', $id)->first()->delete();
     }
+    private static function detailed($recipe)
+    {
+        $r = Recipes::findOrFail($recipe->id);
+        $recipe->materials = explode('\\n', $r->materials);
+        $recipe->views = $r->views()->count();
+        $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
+        $recipe->user = $r->user()->first();
+        $recipe->contents = $r->contents()->get();
+        $recipe->comments = $r->comments()->get();
+    }
 
-    public function recipes(Request $request)
+    private static function toArrayMaterials($arr)
+    {
+        return explode('\\n', $arr);
+    }
+
+    public function recipes(Request $request, $username, $title)
     {
         if (Cookie::get('resep_tangan_session') == null) {
             Cookie::queue('resep_tangan_session', $request->ip() . '|' . Str::random(6), 60);
-            if ($request->id) {
-                $request->merge(['recipe_id' => $request->id]);
+            if ($title && $username) {
+                $recipe = self::get(['title' => $title, 'username' => $username])[0];
+                $request->merge(['recipe_id' => $recipe->id]);
                 ViewsController::add($request);
-                return new PostResponse(true, resource: self::get(['id' => $request->id]));
-            }
-            if ($request->title) {
-                $request->merge(['recipe_id' => Recipes::where('title', 'like', '%' . $request->title . '%')->get()->id]);
-                ViewsController::add($request);
-                return new PostResponse(true, resource: self::get(['title' => $request->title]));
+                return new PostResponse(true, resource: $recipe);
             }
         }
         return new PostResponse(true, resource: self::get());
+    }
+
+    public function top()
+    {
+        $recipes = Recipes::all()->take(8);
+        foreach ($recipes as $recipe) {
+            $r = Recipes::findOrFail($recipe->id);
+            $recipe->user = $r->user()->first();
+        }
+        return new PostResponse(true, resource: $recipes);
+    }
+
+    public function search($title)
+    {
+        $recipes = self::get(['title' => $title]);
+        return new PostResponse(true, resource: $recipes);
     }
 
     public function add_recipes(Request $request)

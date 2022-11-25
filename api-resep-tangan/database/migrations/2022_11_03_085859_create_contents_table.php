@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recipe_id')->constrained('recipes');
+            $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade');
             $table->json('media');
             $table->text('step');
             $table->timestamps();

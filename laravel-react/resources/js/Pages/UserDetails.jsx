@@ -1,36 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import RecipeCard from '@/Components/RecipeCard';
 import { Head, usePage } from '@inertiajs/inertia-react';
+import { BASE_STORAGE_API_URL } from '@/assets/config';
 
 export default function UserDetails(props) {
-    const { username } = usePage().props;
+    const { user } = usePage().props;
+    const { recipes } = user;
+    const joinedTime = new Date(Date.parse(user.created_at))
+    useEffect(() => {
+        console.log(user)
+    }, [user]);
     return (
         <>
-            <Head title={username.toProperCase()} />
+            <Head title={user.name} />
             <Navbar />
-            <div className="container mx-auto min-h-screen">
-                <div className="my-4 flex place-content-between mx-4">
-                    <button type="button">
-                        <svg class="w-6 h-6 stroke-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    </button>
-                    <div class="flex items-center space-x-4">
-                        <div class="font-medium text-right">
-                            <div>Jese Leos</div>
-                            <div class="flex items-center mt-1 justify-end">
-                                <svg aria-hidden="true" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                <p class="ml-2 text-xs font-bold text-gray-900">4.95</p>
+            <div className="container mx-auto min-h-screen my-8">
+                <div className="my-4 flex place-content-center mx-4">
+                    <div className="flex items-center space-x-4">
+                        <img className="w-24 h-24 rounded-full" src={`${BASE_STORAGE_API_URL}/${user.media.path}`} />
+                        <div className="font-medium">
+                            <div>{user.name} <span className="text-sm text-gray-500">@{user.username}</span> <button type="button" className="py-2.5 px-4 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">Ikuti</button></div>
+                            <div className="text-xs text-gray-400 my-2">Bergabung pada {new Intl.DateTimeFormat("id-ID", {day:"numeric",month:"long",year:"numeric"}).format(joinedTime)}</div>
+                            <div className="flex">
+                                <button type="button" className="text-gray-900 hover:bg-gray-50 focus:outline-none font-medium rounded text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                    <span className="font-bold">{user.followers}</span> pengikut
+                                </button>
+                                <button type="button" className="text-gray-900 hover:bg-gray-50 focus:outline-none font-medium rounded text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                    <span className="font-bold">{user.following}</span> mengikuti
+                                </button>
                             </div>
                         </div>
-                        <img class="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
                     </div>
                 </div>
+                <hr className="my-8 h-px bg-orange-200 border-0" />
                 <div className="mx-4 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <RecipeCard href={route('recipe', { 'title': 'tumis' })} withoutUser />
-                    <RecipeCard href={route('recipe', { 'title': 'tumis' })} withoutUser />
-                    <RecipeCard href={route('recipe', { 'title': 'tumis' })} withoutUser />
-                    <RecipeCard href={route('recipe', { 'title': 'tumis' })} withoutUser />
+                    {
+                        recipes.map((e,i)=>{
+                            return(
+                                <RecipeCard data={{...e,'user':user}} withoutUser/>
+                            )
+                        })
+                    }
                 </div>
             </div>
             <Footer />

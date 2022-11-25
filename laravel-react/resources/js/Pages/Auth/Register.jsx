@@ -28,7 +28,6 @@ export default function Register() {
             <Head title="Daftar" />
             <p className="font-thin text-center mb-6">Mendaftar menggunakan email</p>
             <form onSubmit={submit}>
-
                 <div className="relative mb-6">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
