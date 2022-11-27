@@ -9,7 +9,7 @@ export default function RecipeCard(props) {
     return (
         <div className="bg-white hover:bg-gray-100 border border-gray-200 rounded-lg shadow-md flex flex-col mx-auto">
             <Link href={route('user-recipe', { 'username': user.username, 'title': titleUrl })}>
-                <img className="rounded-l-lg h-full object-cover" src={`${BASE_STORAGE_API_URL}/${data.banner.path}`} />
+                <img className="rounded-t-lg h-full object-cover" src={`${BASE_STORAGE_API_URL}/${data.banner.path}`} />
             </Link>
             <div className="p-5">
                 <div className="flex items-center space-x-4 mb-2">

@@ -69,9 +69,18 @@ class RecipesController extends Controller
         }
     }
 
-    private static function toArrayMaterials($arr)
+    public function check_title(Request $request, $title)
     {
-        return explode('\\n', $arr);
+        $user_id = $request->user()->id;
+        $recipe = Recipes::where([
+            ['user_id', $user_id],
+            ['title', 'like', '%' . Str::replace('-', ' ', $title) . '%']
+        ])->first();
+        if ($recipe == null) {
+            return new PostResponse(true);
+        } else {
+            return new PostResponse(false);
+        }
     }
 
     public function recipes(Request $request, $username, $title)

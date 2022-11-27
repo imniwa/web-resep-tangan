@@ -26,7 +26,7 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Daftar" />
-            <p className="font-thin text-center mb-6">Mendaftar menggunakan email</p>
+            <p className="text-center mb-6">Mendaftar menggunakan email</p>
             <form onSubmit={submit}>
                 <div className="relative mb-6">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -150,7 +150,7 @@ export default function Register() {
                     </button>
                     <div className="inline-flex justify-center items-center w-full">
                         <hr className="my-8 w-64 h-px bg-gray-200 border-0" />
-                        <span className="absolute left-1/2 px-3 font-thin text-gray-400 bg-white -translate-x-1/2">atau</span>
+                        <span className="absolute left-1/2 px-3 text-gray-400 bg-white -translate-x-1/2">atau</span>
                     </div>
                     <Link href={route('login')}>
                         <button type="button" className="text-white bg-gray-800 w-full hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">

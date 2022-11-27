@@ -43,7 +43,7 @@ export default function RecipeDetails(props) {
                         :
                         <>
                             <div className="flex flex-col md:flex-row">
-                                <div className="px-8">
+                                <div className="px-8 md:w-2/5">
                                     <h1 className="text-center text-xl font-bold mb-4">{data.title}</h1>
                                     <div className="h-44 overflow-hidden rounded">
                                         <img className="w-full object-cover mt-[-10%]"
@@ -93,7 +93,7 @@ export default function RecipeDetails(props) {
 
                                     </div>
                                 </div>
-                                <div className="px-8">
+                                <div className="px-8 md:w-3/5">
                                     <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8 md:hidden" />
                                     <h6 className="font-meium underline mb-4">Langkah - langkah</h6>
                                     <ol className="relative border-l border-gray-200">

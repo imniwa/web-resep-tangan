@@ -18,6 +18,10 @@ export default function SearchResult(props) {
     const callBack = (current) => {
         setCurrent(current);
         setItemOffset(current * itemsPerPage % result.length);
+        window.scrollTo({
+            top:0,
+            behavior:'smooth'
+        });
     }
 
     return (
@@ -32,6 +36,9 @@ export default function SearchResult(props) {
                         :
                         <h1 className="text-center mb-6">Hasil Pencarian untuk "<span className="text-blue-800 font-bold">{query}</span>"</h1>
                 }
+                <div className="grid place-content-center mb-8">
+                    <Paginate pageCount={pageCount} handle={callBack} current={current} />
+                </div>
                 {
                     result.length == 0
                         ?

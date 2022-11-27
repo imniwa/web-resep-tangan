@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'token' => session('token')
             ],
             'flash' => [
+                'success' => session('success'),
                 'notification' => session('message')
             ],
             'ziggy' => function () use ($request) {

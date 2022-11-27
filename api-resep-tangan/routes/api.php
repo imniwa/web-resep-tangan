@@ -89,6 +89,7 @@ Route::group([
     Route::delete('/delete', 'delete_recipes');
     Route::get('/top', 'top')->name('top_recipes');
     Route::get('/all', 'all');
+    Route::get('/check-title/{title}', 'check_title');
     Route::get('/{title}', 'search');
     Route::get('/{username}/{title}', 'recipes')->name('get_recipes');
 });

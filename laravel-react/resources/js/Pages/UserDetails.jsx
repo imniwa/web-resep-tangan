@@ -6,7 +6,7 @@ import { Head, usePage } from '@inertiajs/inertia-react';
 import { BASE_STORAGE_API_URL } from '@/assets/config';
 
 export default function UserDetails(props) {
-    const { user } = usePage().props;
+    const { user,isMe } = usePage().props;
     const { recipes } = user;
     const joinedTime = new Date(Date.parse(user.created_at))
     return (
@@ -18,7 +18,8 @@ export default function UserDetails(props) {
                     <div className="flex items-center space-x-4">
                         <img className="w-24 h-24 rounded-full" src={`${BASE_STORAGE_API_URL}/${user.media.path}`} />
                         <div className="font-medium">
-                            <div>{user.name} <span className="text-sm text-gray-500">@{user.username}</span> <button type="button" className="py-2.5 px-4 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">Ikuti</button></div>
+                            <div>{user.name} <br />
+                            <span className="text-sm text-gray-500">@{user.username}</span> {isMe ? '' : <button type="button" className="py-2.5 px-4 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">Ikuti</button>}</div>
                             <div className="text-xs text-gray-400 my-2">Bergabung pada {new Intl.DateTimeFormat("id-ID", {day:"numeric",month:"long",year:"numeric"}).format(joinedTime)}</div>
                             <div className="flex">
                                 <button type="button" className="text-gray-900 hover:bg-gray-50 focus:outline-none font-medium rounded text-sm px-5 py-2.5 text-center mr-2 mb-2">

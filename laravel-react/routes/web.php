@@ -48,6 +48,7 @@ Route::group([
             Route::get('/me', 'user')->name('profile');
             Route::get('/settings', 'settings')->name('settings');
             Route::get('/upload-recipe', 'upload')->name('upload');
+            Route::post('/upload-recipe', 'post_recipe');
         });
         Route::get('/{username}', 'show')->name('user');
         Route::get('/{username}/{title}', 'show')->name('user-recipe');
