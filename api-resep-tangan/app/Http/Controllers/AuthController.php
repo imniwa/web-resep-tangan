@@ -92,21 +92,35 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $data = [];
-        foreach ($request->only(['username', 'media', 'password']) as $k => $d) {
-            if ($k == 'media') {
-                $data[$k] = json_encode(FileController::move($request->file('media'), self::$dir));
-            } else if ($k == 'password') {
-                $data[$k] = Hash::make($request->password);
-            } else {
-                $data[$k] = Str::lower($d);
+        foreach ($request->only(['username', 'media', 'name']) as $k => $d) {
+            if (!empty($d) && $d != null) {
+                if ($k == 'media') {
+                    $data[$k] = json_encode(FileController::move($request->file('media'), self::$dir));
+                } else {
+                    $data[$k] = Str::lower($d);
+                }
             }
         }
         $user = User::where('id', Auth::user()->id)->first();
         $user->update($data);
-        if (isset($data['password'])) {
-            Auth::logout();
-        }
         return new PostResponse(true, resource: $user);
+    }
+    public function update_password(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string'
+        ]);
+        $user = Auth::user();
+        if (Hash::make($request->old_password) == $user->getAuthPassword()) {
+            $user = User::where('id', Auth::user()->id)->first();
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+            Auth::logout();
+            return new PostResponse(true, 'password successfully updated');
+        }
+        return new PostResponse(false, 'invalid password');
     }
 
     public function token_validation(Request $request)

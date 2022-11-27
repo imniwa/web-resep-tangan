@@ -36,10 +36,14 @@ class Controller extends BaseController
         return $res;
     }
 
-    public static function post($url, $options)
+    public static function post($url, $options = null)
     {
         // try {
-        $res = self::api(true)->post($url, $options);
+        if ($options == null) {
+            $res = self::api(true)->post($url);
+        } else {
+            $res = self::api(true)->post($url, $options);
+        }
         $res = json_decode($res->getBody()->getContents());
         // } catch (\Throwable $th) {
         //     $res = null;

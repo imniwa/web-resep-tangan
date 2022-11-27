@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,7 @@ class UserController extends Controller
             $user = json_decode($this->api()->request('GET', 'user/' . $username)->getBody()->getContents());
             return Inertia::render('UserDetails', [
                 'user' => $user->data,
-                'isMe' => false
+                'isMe' => $username == session('user')->username ? true : false
             ]);
         }
     }
@@ -85,7 +86,10 @@ class UserController extends Controller
                 $res = $this->post('recipes/contents', $data);
             }
         }
-        return self::show($request, session('user')->username, Str::replace('-', ' ', $request->title));
+        return redirect()->route('user-recipe', [
+            'username' => session('user')->username,
+            'title' => Str::replace('-', ' ', $request->title)
+        ]);
     }
 
     public function user(Request $request)
@@ -100,5 +104,43 @@ class UserController extends Controller
     public function settings()
     {
         return Inertia::render('UserSettings');
+    }
+
+    public function update(Request $request)
+    {
+        $data = [
+            'multipart' => []
+        ];
+        foreach ($request->only(['username', 'name', 'media']) as $k => $val) {
+            if ($val != null) {
+                if ($k != 'media' && session('user')->$k == $val) {
+                    continue;
+                }
+                array_push($data['multipart'], [
+                    'name' => $k,
+                    'contents' => $k !== 'media' ? $val : \GuzzleHttp\Psr7\Utils::tryFopen($val->getPathname(), 'r')
+                ]);
+            }
+        }
+        $res = $this->post('auth/update', $data);
+        if (!$res->status) {
+            return redirect()->back()->withErrors(['message' => 'gagal mengupdate akun']);
+        }
+        if ($request->password != null && $request->old_password != null) {
+            $data = [];
+            foreach ($request->only(['old_password', 'password']) as $k => $val) {
+                array_push($data, [$k => $val]);
+            }
+            $res = $this->post('auth/update-password', $data);
+            if (!$res->status) {
+                return redirect()->back()->withErrors(['password' => 'kata sandi lama tidak tepat']);
+            }
+        }
+        $res = $this->post('auth/refresh');
+        if ($res->status) {
+            Session::put('user', $res->data->user);
+            Session::put('token', $res->data->authorization->token);
+        }
+        return redirect()->back()->with(['success' => 'berhasil mengupdate akun']);
     }
 }

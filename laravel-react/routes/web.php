@@ -47,6 +47,7 @@ Route::group([
         Route::middleware(EnsureTokenIsValid::class)->group(function () {
             Route::get('/me', 'user')->name('profile');
             Route::get('/settings', 'settings')->name('settings');
+            Route::post('/settings', 'update');
             Route::get('/upload-recipe', 'upload')->name('upload');
             Route::post('/upload-recipe', 'post_recipe');
         });

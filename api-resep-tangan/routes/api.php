@@ -34,6 +34,7 @@ Route::group([
     Route::post('/register', 'register')->name('register');
     Route::post('/logout', 'logout')->name('logout');
     Route::post('/update', 'update')->name('update');
+    route::post('/update-password', 'update_password');
     Route::post('/email-checker', 'email_check');
     Route::get('/is-valid-token', 'token_validation');
 });

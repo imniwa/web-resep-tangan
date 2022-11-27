@@ -82,7 +82,7 @@ export default function UploadRecipe() {
             <div className="container mx-auto min-h-screen">
                 <form onSubmit={submit} encType="multipart/form-data">
                     <div className="flex flex-col lg:flex-row-reverse">
-                        <div className="mx-4 mt-8 lg:w-3/5">
+                        <div className="mx-2 mt-8 lg:w-3/5">
                             <div className={`${errors.title ? 'mb-2' : 'mb-6'}`}>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Judul</label>
                                 <input
@@ -198,7 +198,7 @@ export default function UploadRecipe() {
                             </div>
                         </div>
 
-                        <div className="mx-4 mt-8 lg:w-2/5">
+                        <div className="mx-2 mt-8 lg:w-2/5">
                             <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8 lg:hidden" />
                             <h1 className="hidden lg:block mb-4">Langkah - langkah</h1>
                             <ol className="relative border-l border-gray-200">
