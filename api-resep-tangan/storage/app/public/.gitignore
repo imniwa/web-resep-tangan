@@ -1,5 +1,6 @@
 !.gitignore
+recipes/**/*
+users/**/*
 !recipes/default-banner.jpg
 !recipes/default-content.png
 !users/default.jpg
-*
