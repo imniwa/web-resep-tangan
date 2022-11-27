@@ -24,4 +24,26 @@ class Controller extends BaseController
             ] : []
         ]);
     }
+
+    public static function get($url)
+    {
+        try {
+            $res = self::api(true)->get($url);
+            $res = json_decode($res->getBody()->getContents());
+        } catch (\Throwable $th) {
+            $res = null;
+        }
+        return $res;
+    }
+
+    public static function post($url, $options)
+    {
+        try {
+            $res = self::api(true)->post($url, $options);
+            $res = json_decode($res->getBody()->getContents());
+        } catch (\Throwable $th) {
+            $res = null;
+        }
+        return $res;
+    }
 }

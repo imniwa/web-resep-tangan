@@ -9,9 +9,6 @@ export default function UserDetails(props) {
     const { user } = usePage().props;
     const { recipes } = user;
     const joinedTime = new Date(Date.parse(user.created_at))
-    useEffect(() => {
-        console.log(user)
-    }, [user]);
     return (
         <>
             <Head title={user.name} />
@@ -39,7 +36,7 @@ export default function UserDetails(props) {
                     {
                         recipes.map((e,i)=>{
                             return(
-                                <RecipeCard data={{...e,'user':user}} withoutUser/>
+                                <RecipeCard data={{...e,'user':user}} withoutUser key={i}/>
                             )
                         })
                     }

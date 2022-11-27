@@ -18,13 +18,21 @@ class DatabaseSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $faker->addProvider(new \FakerRestaurant\Provider\id_ID\Restaurant($faker));
 
+
+        $this->command->info("Seeding User");
+        $this->command->getOutput()->progressStart(20);
         for ($i = 0; $i < 20; $i++) {
             \App\Models\User::factory()->create([
                 'name' => $faker->name(),
                 'email' => $faker->unique()->safeEmail(),
                 'username' => $faker->unique()->userName(),
             ]);
+            $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
+
+        $this->command->info("Seeding Recipes");
+        $this->command->getOutput()->progressStart(20);
         for ($i = 0; $i < 20; $i++) {
             \App\Models\Recipes::factory()->create([
                 'title' => $faker->foodName(),
@@ -32,6 +40,69 @@ class DatabaseSeeder extends Seeder
                 'materials' => implode('\\n', (array)$faker->sentences($nb = 3, $asText = false)),
                 'user_id' => $i + 1,
             ]);
+            $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
+
+
+        $this->command->info("Seeding Contents");
+        $this->command->getOutput()->progressStart(20);
+        for ($i = 0; $i < 20; $i++) {
+            for ($j = 0; $j < rand(6, 10); $j++) {
+                \App\Models\Contents::factory()->create([
+                    'recipe_id' => $i + 1,
+                    'step' => $faker->text()
+                ]);
+            }
+            $this->command->getOutput()->progressAdvance();
+        }
+        $this->command->getOutput()->progressFinish();
+
+
+        $this->command->info("Seeding Comments");
+        $this->command->getOutput()->progressStart(20);
+        for ($i = 0; $i < 20; $i++) {
+            for ($j = 0; $j < rand(5, 10); $j++) {
+                \App\Models\Comments::factory()->create([
+                    'message' => $faker->text(),
+                    'recipe_id' => $i + 1,
+                    'user_id' => rand(1, 20)
+                ]);
+            }
+            $this->command->getOutput()->progressAdvance();
+        }
+        $this->command->getOutput()->progressFinish();
+
+        $this->command->info("Seeding Rating");
+        $this->command->getOutput()->progressStart(20);
+        for ($i = 0; $i < 20; $i++) {
+            for ($j = 0; $j < rand(7, 9); $j++) {
+                \App\Models\Rating::factory()->create([
+                    'rating' => rand(3, 5),
+                    'recipe_id' => $i + 1,
+                    'user_id' => rand(1, 20)
+                ]);
+            }
+            $this->command->getOutput()->progressAdvance();
+        }
+        $this->command->getOutput()->progressFinish();
+
+
+        $this->command->info("Seeding Follow");
+        $this->command->getOutput()->progressStart(20);
+        for ($i = 0; $i < 20; $i++) {
+            for ($j = 0; $j < rand(7, 14); $j++) {
+                $follow = rand(1, 20);
+                while ($follow == $i + 1) {
+                    $follow = rand(1, 20);
+                }
+                \App\Models\Follows::factory()->create([
+                    'id_user' => $i + 1,
+                    'follow' => $follow
+                ]);
+            }
+            $this->command->getOutput()->progressAdvance();
+        }
+        $this->command->getOutput()->progressFinish();
     }
 }

@@ -11,9 +11,9 @@ class UserController extends Controller
     public function show(Request $request, $username, $title = null)
     {
         if ($title) {
-            $res = json_decode($this->api()->request('GET', 'recipes/' . $username . '/' . $title)->getBody()->getContents());
+            $res = $this->get('recipes/' . $username . '/' . $title);
             return Inertia::render('RecipeDetails', [
-                'data' => $res->data
+                'data' => $res == null ? null : $res->data
             ]);
         } else {
             $user = json_decode($this->api()->request('GET', 'user/' . $username)->getBody()->getContents());

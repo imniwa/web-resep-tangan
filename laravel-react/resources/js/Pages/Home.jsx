@@ -10,20 +10,15 @@ export default function Home() {
     const { events } = useDraggable(ref);
     const { topUsers, topRecipes } = usePage().props;
 
-    useEffect(() => {
-        console.log(topRecipes);
-    }, [topRecipes]);
-
     return (
         <>
             <Head title="Home" />
             <Navbar />
-            <div className="container px-8 mx-auto pt-6">
+            <div className="container px-4 mx-auto pt-6">
                 <div id="top-user">
                     <h1 className="font-medium text-lg mb-4">Pemberi Resep Terbaik</h1>
                     <div className="flex flex-row lg:overflow-hidden overflow-x-auto" {...events} ref={ref}>
-                        {
-                            topUsers.map((e, i) => {
+                        {   topUsers.map((e, i) => {
                                 return (
                                     <div className="flex flex-col mr-6 flex-none relative" key={`top-user-${i}`}>
                                         <Link href={`${route('user', { 'username': e.username })}`} className="absolute top-0 bottom-0 right-0 left-0" />
@@ -40,7 +35,7 @@ export default function Home() {
                 <div id="top-recipes" className="my-16">
                     <h1 className="font-medium text-lg mb-4">Resep Terbaik</h1>
                     <div className="flex flex-row lg:overflow-hidden oveflow-x-auto">
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {
                                 topRecipes.map((e, i) => {
                                     let title = e.title.toLowerCase().replace(/\W\s*/g, function(){return '-'});

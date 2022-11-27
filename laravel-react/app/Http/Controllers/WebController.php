@@ -10,10 +10,10 @@ class WebController extends Controller
 {
     public function home()
     {
-        $res = $this->api()->request('GET', 'user/top');
-        $topUsers = json_decode($res->getBody()->getContents())->data;
-        $res = $this->api()->request('GET', 'recipes/top');
-        $topRecipes = json_decode($res->getBody()->getContents())->data;
+        $res = $this->get('user/top');
+        $topUsers = $res == null ? [] : $res->data;
+        $res = $this->get('recipes/top');
+        $topRecipes = $res == null ? [] : $res->data;
         return Inertia::render('Home', [
             'topUsers' => $topUsers,
             'topRecipes' => $topRecipes
@@ -25,13 +25,13 @@ class WebController extends Controller
         if ($query) {
             $query = Str::lower($query);
             $query = Str::replace(' ', '-', $query);
-            $res = json_decode($this->api()->request('GET', 'recipes/' . $query)->getBody()->getContents());
-            return Inertia::render('SearchResult', [
-                'query' => $query,
-                'result' => $res->data
-            ]);
+            $res = $this->get('recipes/' . $query);
         } else {
-            return 'without query';
+            $res = $this->get('recipes/all');
         }
+        return Inertia::render('SearchResult', [
+            'query' => $query,
+            'result' => $res == null ? [] : $res->data
+        ]);
     }
 }

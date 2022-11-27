@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class RecipesFactory extends Factory
+class RatingFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,12 +17,9 @@ class RecipesFactory extends Factory
     public function definition()
     {
         return [
-            'title' => 'title',
-            'description' => 'description',
-            'materials' => 'materials',
-            'banner' => json_encode([
-                'path' => 'recipes/default-banner.jpg'
-            ])
+            'rating' => 5,
+            'recipe_id' => 1,
+            'user_id' => 1,
         ];
     }
 }

@@ -17,7 +17,7 @@ class RecipesController extends Controller
     private static $dir = 'recipes';
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['recipes', 'top', 'search']]);
+        $this->middleware('auth:api', ['except' => ['recipes', 'top', 'search', 'all']]);
     }
     public static function get($options = [])
     {
@@ -63,6 +63,10 @@ class RecipesController extends Controller
         $recipe->user = $r->user()->first();
         $recipe->contents = $r->contents()->get();
         $recipe->comments = $r->comments()->get();
+        foreach ($recipe->comments as $comment) {
+            $user = User::where('id', $comment->user_id)->first();
+            $comment->user = $user;
+        }
     }
 
     private static function toArrayMaterials($arr)
@@ -79,14 +83,27 @@ class RecipesController extends Controller
                 $request->merge(['recipe_id' => $recipe->id]);
                 ViewsController::add($request);
                 return new PostResponse(true, resource: $recipe);
+            } else {
+                return $this->all();
             }
         }
         return new PostResponse(true, resource: self::get());
     }
 
+    public function all()
+    {
+        $recipes = Recipes::all();
+        foreach ($recipes as $recipe) {
+            $r = Recipes::findOrFail($recipe->id);
+            $recipe->user = $r->user()->first();
+            $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
+        }
+        return new PostResponse(true, resource: $recipes);
+    }
+
     public function top()
     {
-        $recipes = Recipes::all()->take(8);
+        $recipes = Recipes::all()->take(9);
         foreach ($recipes as $recipe) {
             $r = Recipes::findOrFail($recipe->id);
             $recipe->user = $r->user()->first();
