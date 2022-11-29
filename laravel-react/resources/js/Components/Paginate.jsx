@@ -12,14 +12,14 @@ export default function Paginate(props) {
         if(current == 0){
             return;
         }
-        handle((prev)=>prev-1);
+        handle(current-1);
     }
     
     const handlePlus = () => {
         if(current == pageCount-1){
             return;
         }
-        handle((prev)=>prev+1);
+        handle(current+1);
     }
 
     for (let i = 0; i < pageCount; i++) {
