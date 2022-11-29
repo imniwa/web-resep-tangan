@@ -45,10 +45,6 @@ export default function Profile() {
         post(route('settings'));
     };
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     return (
         <>
             <Head title={'Settings'} />

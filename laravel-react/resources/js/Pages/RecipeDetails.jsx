@@ -32,8 +32,21 @@ export default function RecipeDetails(props) {
         });
     }
 
-    const submitComment = () => {
-        Inertia.post(route('comment-recipe'),data);
+    const handleComment = (e) => {
+        if(data.comment.length == 0){
+            return;
+        }
+        Inertia.post(route('comment-recipe'),data,{
+            onFinish: () => {
+                reset()
+            },
+            onSuccess: () => {
+                window.scroll({
+                    top: document.getElementById('reviews').getBoundingClientRect().top + window.scrollY,
+                    behavior:"smooth"
+                })
+            }
+        });
     }
 
     return (
@@ -136,30 +149,36 @@ export default function RecipeDetails(props) {
                                 </div>
                             </div>
                             <hr className="mx-auto w-48 h-1 bg-gray-100 rounded border-0 my-8" />
-                            <div className="px-8">
+                            <div className="px-8" id="reviews" >
                                 <div className="flex place-content-between  ">
                                     <h1 className="text-xl font-medium">Reviews</h1>
-                                    <Rating max={5} handle={handleRating} self={self_rating}/>
+                                    {
+                                        !self_rating 
+                                        ?
+                                        ''
+                                        :
+                                        <Rating max={5} handle={handleRating} />
+                                    }
                                 </div>
                                 <hr className="my-4 h-px bg-gray-200 border-0" />
-                                <form onSubmit={submitComment}>
-                                    <div className="flex items-center px-3 py-2">
-                                        <div className="p-2 text-gray-500">
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                            <span className="sr-only">Comments</span>
-                                        </div>
-                                        <textarea id="chat" rows="1"
-                                            value={data.comment}
-                                            required
-                                            onChange={(e) => { setData('comment', e.target.value) }}
-                                            className="block mr-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Your message..." />
-                                        <button type="submit" className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100">
-                                            <svg aria-hidden="true" className="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
-                                            <span className="sr-only">Send message</span>
-                                        </button>
+                                <div className="flex items-center px-3 py-2">
+                                    <div className="p-2 text-gray-500">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                        <span className="sr-only">Comments</span>
                                     </div>
-                                </form>
+                                    <textarea id="chat" rows="1"
+                                        value={data.comment}
+                                        required
+                                        onChange={(e) => { setData('comment', e.target.value) }}
+                                        className="block mr-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Your message..." />
+                                    <button type="button"
+                                        onClick={handleComment}
+                                        className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100">
+                                        <svg aria-hidden="true" className="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                                        <span className="sr-only">Send message</span>
+                                    </button>
+                                </div>
                                 <hr className="my-4 h-px bg-gray-200 border-0" />
                                 <div className="grid gap-8">
                                     {

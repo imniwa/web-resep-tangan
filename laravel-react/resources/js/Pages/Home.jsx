@@ -62,6 +62,9 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+                <div className="text-center mb-16 ">
+                    <Link href={route('search')} className="underline text-orange-500 hover:text-orange-700">Tampilkan seluruh resep</Link>
+                </div>
             </div>
             <Footer />
         </>

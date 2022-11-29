@@ -30,12 +30,7 @@ export default function UploadRecipe() {
             return;
         }
         let file = stepFile.current.files.length == 0 ? null : stepFile.current.files[0];
-        let copy = [...data.contents];
-        copy.push({
-            media: file,
-            step: step.current.value
-        });
-        setData('contents', copy);
+        setData('contents', [...data.contents, { media: file, step: step.current.value }]);
         step.current.value = '';
         setStepHasThumbnail(false);
     }
@@ -51,9 +46,7 @@ export default function UploadRecipe() {
         if (material.current.value === '') {
             return;
         }
-        let copy = [...data.materials];
-        copy.push(material.current.value);
-        setData('materials', copy);
+        setData('materials', [...data.materials, material.current.value]);
         material.current.value = '';
     }
 
@@ -68,9 +61,8 @@ export default function UploadRecipe() {
         e.preventDefault();
         post(route('upload'), data, {
             forceFormData: true,
-            onSuccess: () => {
+            onFinish: () => {
                 reset();
-
             }
         });
     };

@@ -30,7 +30,7 @@ class RecipeController extends Controller
         ]);
         $res = json_decode($res->getBody()->getContents());
         if ($res->status) {
-            return redirect()->route('profile');
+            return redirect()->bacK();
         }
         return redirect()->back()->withErrors(['message' => 'resep gagal dihapus']);
     }

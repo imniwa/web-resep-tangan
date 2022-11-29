@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
+use App\Models\Comments;
 use App\Models\Rating;
 use App\Models\Recipes;
 use App\Models\User;
@@ -62,7 +63,7 @@ class RecipesController extends Controller
         $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
         $recipe->user = $r->user()->first();
         $recipe->contents = $r->contents()->get();
-        $recipe->comments = $r->comments()->get();
+        $recipe->comments = Comments::where('recipe_id', $recipe->id)->orderBy('created_at', 'desc')->get();
         foreach ($recipe->comments as $comment) {
             $user = User::where('id', $comment->user_id)->first();
             $comment->user = $user;
