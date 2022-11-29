@@ -33,7 +33,7 @@ export default function RecipeDetails(props) {
     }
 
     const submitComment = () => {
-        post(route('comment-recipe'));
+        Inertia.post(route('comment-recipe'),data);
     }
 
     return (
@@ -150,6 +150,7 @@ export default function RecipeDetails(props) {
                                         </div>
                                         <textarea id="chat" rows="1"
                                             value={data.comment}
+                                            required
                                             onChange={(e) => { setData('comment', e.target.value) }}
                                             className="block mr-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Your message..." />

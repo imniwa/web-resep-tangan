@@ -131,9 +131,15 @@ class RecipeController extends Controller
             'recipe_id' => 'required'
         ], [
             'comment.required' => 'komentar tidak boleh kosong',
-            'recipe.required' => 'resep tidak ditemukan'
+            'recipe_id.required' => 'resep tidak ditemukan'
         ]);
-        dd($request->all());
+        $res = $this->post('recipes/comments', [
+            'form_params' => [
+                'message' => $request->comment,
+                'recipe_id' => $request->recipe_id
+            ]
+        ]);
+        return redirect()->back();
     }
 
     public function rating(Request $request)
