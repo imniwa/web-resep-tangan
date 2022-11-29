@@ -189,7 +189,7 @@ class RecipesController extends Controller
         $request->validate([
             '_id' => 'required'
         ]);
-        $recipes = self::get($request->_id);
+        $recipes = self::get(['id' => $request->_id]);
         FileController::delete(json_decode($recipes[0]->banner)->path);
         self::delete($request->_id);
         return new PostResponse(true, 'Recipes successfully deleted', $recipes);

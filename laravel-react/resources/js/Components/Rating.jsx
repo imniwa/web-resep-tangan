@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Rating(props) {
-    const { max,currentRate } = props;
-    const [rate,setRate] = useState(currentRate == null ? 0 : currentRate);
+    const { max, handle, self } = props;
+    const [rate, setRate] = useState(self == null ? 0 : self);
     const star = [];
     for (let i = 0; i < max; i++) {
-        star.push(i+1);
+        star.push(i + 1);
     }
-    const handleClick = (e)=>{
+    const handleClick = (e) => {
         setRate(+e.currentTarget.value);
+        handle ? handle(+e.currentTarget.value) : '';
     }
-    const updateStar = ()=>{
+    const updateStar = () => {
         let el = document.querySelector('div#parent-rating');
-        el.querySelectorAll('svg').forEach((e,i)=>{
-            if(i < rate){
-                e.classList.replace('text-gray-300','text-yellow-400');
-            }else{
-                e.classList.replace('text-yellow-400','text-gray-300');
+        el.querySelectorAll('svg').forEach((e, i) => {
+            if (i < rate) {
+                e.classList.replace('text-gray-300', 'text-yellow-400');
+            } else {
+                e.classList.replace('text-yellow-400', 'text-gray-300');
             }
         })
     }
+
     useEffect(() => {
         updateStar()
-    },[rate]);
+    }, [rate]);
+
     return (
         <div className="flex items-center" id="parent-rating">
             {star.map((e, i) => {

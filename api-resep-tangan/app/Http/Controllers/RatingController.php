@@ -38,6 +38,17 @@ class RatingController extends Controller
         return new PostResponse(true, resource: $rating);
     }
 
+    public function self_rating(Request $request)
+    {
+        $request->validate([
+            'recipe_id' => 'required',
+        ]);
+        $user = Auth::user();
+        $rating = Rating::where('user_id', $user->id)
+            ->where('recipe_id', $request->recipe_id)->first();
+        return new PostResponse(true, resource: $rating);
+    }
+
     public function add_rating(Request $request)
     {
         $request->validate([
@@ -47,10 +58,10 @@ class RatingController extends Controller
         $user = Auth::user();
         $recipes = Recipes::findOrFail($request->recipe_id);
         if ($recipes->user()->first()->id == $user->id) {
-            return new PostResponse(false);
+            return new PostResponse(false, 'recipe');
         }
         $rating = Rating::where('user_id', $user->id)
-            ->where('recipe_id', $request->recipe_id);
+            ->where('recipe_id', $request->recipe_id)->first();
         if ($rating != null) {
             return new PostResponse(false);
         }

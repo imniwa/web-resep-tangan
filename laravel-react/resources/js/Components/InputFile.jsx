@@ -1,8 +1,9 @@
+import { BASE_STORAGE_API_URL } from '@/assets/config';
 import React, { useEffect, useRef, useState } from 'react';
 
 export default function InputFile(props) {
     const { name, dimension, handleFile, fileRef, thumbnailRef, stateHasFile } = props
-    const [hasFile, setHasFile] = stateHasFile == null ? useState(false) : stateHasFile;
+    const [hasFile, setHasFile] = stateHasFile == null ? useState(isEdit ? true : false) : stateHasFile;
     const inputFile = fileRef == null ? useRef(null) : fileRef;
     const thumbnail = thumbnailRef == null ? useRef(null) : thumbnailRef;
 

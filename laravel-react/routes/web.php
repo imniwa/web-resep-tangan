@@ -48,8 +48,14 @@ Route::group([
             Route::get('/me', 'user')->name('profile');
             Route::get('/settings', 'settings')->name('settings');
             Route::post('/settings', 'update');
-            Route::get('/upload-recipe', 'upload')->name('upload');
-            Route::post('/upload-recipe', 'post_recipe');
+            Route::controller(RecipeController::class)->group(function () {
+                Route::get('/upload-recipe', 'upload')->name('upload');
+                Route::post('/upload-recipe', 'add');
+                Route::post('/delete-recipe', 'delete')->name('delete-recipe');
+                Route::post('/edit-recipe', 'edit')->name('edit-recipe');
+                Route::post('/comment-recipe', 'comment')->name('comment-recipe');
+                Route::post('/rating-recipe', 'rating')->name('rating-recipe');
+            });
         });
         Route::get('/{username}', 'show')->name('user');
         Route::get('/{username}/{title}', 'show')->name('user-recipe');

@@ -38,16 +38,23 @@ class Controller extends BaseController
 
     public static function post($url, $options = null)
     {
-        // try {
         if ($options == null) {
             $res = self::api(true)->post($url);
         } else {
             $res = self::api(true)->post($url, $options);
         }
         $res = json_decode($res->getBody()->getContents());
-        // } catch (\Throwable $th) {
-        //     $res = null;
-        // }
+        return $res;
+    }
+
+    public static function put($url, $options = null)
+    {
+        if ($options == null) {
+            $res = self::api(true)->put($url);
+        } else {
+            $res = self::api(true)->put($url, $options);
+        }
+        $res = json_decode($res->getBody()->getContents());
         return $res;
     }
 }

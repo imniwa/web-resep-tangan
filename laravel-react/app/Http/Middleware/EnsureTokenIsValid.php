@@ -23,7 +23,7 @@ class EnsureTokenIsValid
             return $next($request);
         } else {
             Session::flush();
-            return redirect()->route('login');
+            return redirect()->route('login')->withErrors(['message' => 'sesi anda habis, silahkan login kembali']);
         }
     }
 }

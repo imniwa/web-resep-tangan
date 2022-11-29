@@ -63,6 +63,15 @@ export default function Login({ status, canResetPassword }) {
                         }
                     </button>
                 </div>
+
+                {
+                    errors.password || errors.message
+                        ?
+                        <p className="mt-2 text-sm text-red-600">{errors.password || errors.message}</p>
+                        :
+                        ''
+                }
+
                 <div className="relative mb-6 text-right">
                     <a href="#" className="underline">Lupa kata sandi?</a>
                 </div>

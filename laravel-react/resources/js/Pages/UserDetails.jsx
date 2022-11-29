@@ -11,7 +11,7 @@ export default function UserDetails(props) {
     const joinedTime = new Date(Date.parse(user.created_at))
     return (
         <>
-            <Head title={user.name} />
+            <Head title={user.username} />
             <Navbar />
             <div className="container mx-auto min-h-screen my-8">
                 <div className="my-4 flex place-content-center mx-4">
@@ -37,7 +37,7 @@ export default function UserDetails(props) {
                     {
                         recipes.map((e,i)=>{
                             return(
-                                <RecipeCard data={{...e,'user':user}} withoutUser key={i}/>
+                                <RecipeCard data={{...e,'user':user}} withoutUser key={i} isMe={isMe}/>
                             )
                         })
                     }

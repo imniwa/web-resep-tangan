@@ -58,10 +58,10 @@ Route::group([
         'prefix' => 'contents',
         'controller' => ContentsController::class
     ], function () {
+        Route::post('/all', 'get_contents');
         Route::post('/', 'add_contents');
         // Route::put('/', 'update_contents');
         Route::delete('/', 'delete_contents');
-        Route::get('/{basename}', 'media');
     });
 
     // domain/api/recipes/rating
@@ -69,6 +69,7 @@ Route::group([
         'prefix' => 'rating',
         'controller' => RatingController::class,
     ], function () {
+        Route::post('/self', 'self_rating');
         Route::get('/', 'rating');
         Route::post('/', 'add_rating');
         Route::put('/', 'update_rating');

@@ -6,8 +6,6 @@ use App\Http\Resources\PostResponse;
 use App\Models\Contents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
 
 class ContentsController extends Controller
 {
@@ -16,13 +14,13 @@ class ContentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['media']]);
+        $this->middleware('auth:api', ['except' => ['get_contents']]);
     }
 
     public static function get($recipes_id = null, $id = null)
     {
         if ($recipes_id) {
-            return Contents::where('recipes_id', $recipes_id)->get();
+            return Contents::where('recipe_id', $recipes_id)->get();
         }
         if ($id) {
             return Contents::where('id', $id)->first();
@@ -47,13 +45,12 @@ class ContentsController extends Controller
     //     return new PostResponse(true,resource:self::get())
     // }
 
-    public function media(Request $request, $basename)
+    public function get_contents(Request $request)
     {
-        $file = Storage::get(self::$dir . '/' . $basename);
-        if ($file) {
-            $img = Image::make($file);
-            return $img->response();
-        }
+        $request->validate([
+            'recipe_id' => 'required'
+        ]);
+        return new PostResponse(true, resource: self::get(recipes_id: $request->recipe_id));
     }
 
     public function add_contents(Request $request)

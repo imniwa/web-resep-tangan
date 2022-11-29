@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import InputFile from '@/Components/InputFile';
-import Toast from '@/Components/Toast';
 import { Head, useForm, usePage } from '@inertiajs/inertia-react';
 
 export default function UploadRecipe() {
+    const { recipe } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: '',
+        title: recipe ? recipe.title : '',
         banner: {},
-        description: '',
+        description: recipe ? recipe.description : '',
         materials: [],
-        contents: []
+        contents: [],
     });
 
     const material = useRef(null);
@@ -106,7 +106,10 @@ export default function UploadRecipe() {
                             <div className="mb-6">
                                 <label htmlFor="thumbnail" className="block mb-2 text-sm font-medium text-gray-900">Thumbnail</label>
                                 <div className="flex items-center justify-center w-full">
-                                    <InputFile name="banner" dimension={{ width: 800, height: 400 }} handleFile={(file) => setData('banner', file)} />
+                                    <InputFile
+                                        name="banner"
+                                        dimension={{ width: 800, height: 400 }}
+                                        handleFile={(file) => setData('banner', file)} />
                                 </div>
                             </div>
                             <div className="mb-6">
