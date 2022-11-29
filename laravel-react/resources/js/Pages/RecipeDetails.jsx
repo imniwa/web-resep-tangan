@@ -157,7 +157,7 @@ export default function RecipeDetails(props) {
                                         ?
                                         ''
                                         :
-                                        <Rating max={5} handle={handleRating} />
+                                        <Rating max={5} handle={handleRating} self={self_rating}/>
                                     }
                                 </div>
                                 <hr className="my-4 h-px bg-gray-200 border-0" />
@@ -184,7 +184,7 @@ export default function RecipeDetails(props) {
                                     {
                                         comments.map((e, i) => {
                                             return (
-                                                <Comments user={e.user} message={e.message} time={e.created_at} key={i} />
+                                                <Comments id={e.id} user={e.user} message={e.message} time={e.created_at} key={i} />
                                             )
                                         })
                                     }

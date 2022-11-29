@@ -142,6 +142,17 @@ class RecipeController extends Controller
         return redirect()->back();
     }
 
+    public function delete_comment(Request $request)
+    {
+        $request->validate([
+            '_id' => 'required'
+        ]);
+        $res = $this->api(true)->request('DELETE', 'recipes/comments', [
+            'form_params' => $request->only('_id')
+        ]);
+        return redirect()->back();
+    }
+
     public function rating(Request $request)
     {
         $request->validate([

@@ -54,6 +54,7 @@ Route::group([
                 Route::post('/delete-recipe', 'delete')->name('delete-recipe');
                 Route::post('/edit-recipe', 'edit')->name('edit-recipe');
                 Route::post('/comment-recipe', 'comment')->name('comment-recipe');
+                Route::post('/delete-comment-recipe', 'delete_comment')->name('delete-comment-recipe');
                 Route::post('/rating-recipe', 'rating')->name('rating-recipe');
             });
         });

@@ -10,6 +10,9 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        if (session('user')) {
+            return redirect()->route('home');
+        }
         switch ($request->method()) {
             case 'GET':
                 return Inertia::render('Auth/Login');
@@ -42,6 +45,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if (session('user')) {
+            return redirect()->route('home');
+        }
         switch ($request->method()) {
             case 'GET':
                 return Inertia::render('Auth/Register');
@@ -74,6 +80,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $this->post('auth/logout');
         $request->session()->flush();
         return redirect()->route('login');
     }
