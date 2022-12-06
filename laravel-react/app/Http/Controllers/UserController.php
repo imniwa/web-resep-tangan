@@ -32,9 +32,18 @@ class UserController extends Controller
                 return redirect()->route('profile');
             }
             $user = json_decode($this->api()->request('GET', 'user/' . $username)->getBody()->getContents());
+            $isMe = session('user') && $username == session('user')->username ? true : false;
+            if (!$isMe && session('user')) {
+                $isFollowing = $this->post('user/isfollowing', [
+                    'form_params' => [
+                        'username' => $user->data->username
+                    ]
+                ]);
+            }
             return Inertia::render('UserDetails', [
                 'user' => $user->data,
-                'isMe' => session('user') && $username == session('user')->username ? true : false
+                'isMe' => $isMe,
+                'isFollowing' => isset($isFollowing) ? $isFollowing->status : false
             ]);
         }
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
@@ -58,6 +59,7 @@ Route::group([
                 Route::post('/rating-recipe', 'rating')->name('rating-recipe');
             });
         });
+        Route::post('/follow', [FollowController::class, 'follow'])->name('follow');
         Route::get('/{username}', 'show')->name('user');
         Route::get('/{username}/{title}', 'show')->name('user-recipe');
     });

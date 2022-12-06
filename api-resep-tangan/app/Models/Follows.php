@@ -17,4 +17,5 @@ class Follows extends Model
         'id_user',
         'follow'
     ];
+    protected $primaryKey = 'id_user';
 }

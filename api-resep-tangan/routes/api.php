@@ -92,10 +92,10 @@ Route::group([
     Route::get('/top', 'top')->name('top_recipes');
     Route::get('/all', 'all');
     Route::get('/check-title/{title}', 'check_title');
+
     Route::get('/{title}', 'search');
     Route::get('/{username}/{title}', 'recipes')->name('get_recipes');
 });
-
 
 // domain/api/user
 Route::group([
@@ -103,16 +103,11 @@ Route::group([
     'controller' => UserController::class
 ], function () {
     Route::get('/top', 'top');
-    Route::get('/{username}', 'user');
+    Route::post('/isfollowing', [FollowsController::class, 'is_following']);
+    Route::post('/follow', [FollowsController::class, 'add_following']);
+    Route::post('/unfollow', [FollowsController::class, 'delete_following']);
+
     Route::get('/{username}/followers', 'followers');
     Route::get('/{username}/following', 'following');
-
-    // domain/api/user/following
-    Route::group([
-        'prefix' => 'following',
-        'controller' => FollowsController::class
-    ], function () {
-        Route::post('/', 'add_following');
-        Route::delete('/', 'delete_following');
-    });
+    Route::get('/{username}', 'user');
 });
