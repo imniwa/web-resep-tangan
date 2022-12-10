@@ -44,9 +44,13 @@ class RatingController extends Controller
             'recipe_id' => 'required',
         ]);
         $user = Auth::user();
-        $rating = Rating::where('user_id', $user->id)
-            ->where('recipe_id', $request->recipe_id)->first();
-        return new PostResponse(true, resource: $rating);
+        $rating = Recipes::where('user_id', $user->id)
+            ->where('id', $request->recipe_id)->first();
+        if (empty($rating)) {
+            return new PostResponse(false);
+        } else {
+            return new PostResponse(true);
+        }
     }
 
     public function add_rating(Request $request)

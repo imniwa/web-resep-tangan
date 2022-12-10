@@ -16,7 +16,7 @@ export default function Navbar(props) {
     }
 
     return (
-        <nav className="border-gray-200 px-2 sm:px-4 py-2.5 bg-white border-b border-b-primary shadow-sm">
+        <nav className="border-gray-200 px-2 sm:px-4 py-2.5 bg-white border-b border-b-primary shadow-sm sticky top-0 z-50">
             <div className="container flex flex-wrap items-center justify-between mx-auto">
                 <Link href={route('home')} className="flex items-center">
                     <span className="self-center text-xl font-bold whitespace-nowrap text-primary">

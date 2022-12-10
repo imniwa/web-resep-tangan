@@ -19,13 +19,13 @@ class UserController extends Controller
                         'recipe_id' => $res->data->id
                     ]
                 ]);
-                if (!empty($self->data)) {
-                    $self_rating = $self->data;
+                if (!empty($self)) {
+                    $self_rating = $self->status;
                 }
             }
             return Inertia::render('RecipeDetails', [
                 'recipe' => $res == null ? null : $res->data,
-                'self_rating' => isset($self_rating) ? $self_rating->rating : false
+                'self_rating' => isset($self_rating) ? $self_rating : false
             ]);
         } else {
             if (session('user') && $username == session('user')->username) {

@@ -4,12 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContentsController;
 use App\Http\Controllers\FollowsController;
-use App\Http\Controllers\MediaController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewsController;
-use App\Http\Middleware\EnsureJWT;
 use Illuminate\Support\Facades\Route;
 
 /*

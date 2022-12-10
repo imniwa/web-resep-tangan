@@ -153,11 +153,7 @@ export default function RecipeDetails(props) {
                                 <div className="flex place-content-between  ">
                                     <h1 className="text-xl font-medium">Reviews</h1>
                                     {
-                                        !self_rating 
-                                        ?
-                                        ''
-                                        :
-                                        <Rating max={5} handle={handleRating} self={self_rating}/>
+                                        !self_rating && <Rating max={5} handle={handleRating} self={self_rating}/>
                                     }
                                 </div>
                                 <hr className="my-4 h-px bg-gray-200 border-0" />
