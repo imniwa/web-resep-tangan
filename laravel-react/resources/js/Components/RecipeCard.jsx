@@ -11,9 +11,7 @@ export default function RecipeCard(props) {
     let titleUrl = title.toLowerCase().replace(/\W\s*/g, function () { return '-' });
 
     const handleEdit = () => {
-        Inertia.post(route('edit-recipe'), {
-            recipe: data
-        });
+        Inertia.get(route('edit-recipe',{id:data.id}));
     }
 
     const handleDelete = () => {

@@ -97,26 +97,20 @@ class RecipeController extends Controller
         ]);
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, $id = null)
     {
         switch ($request->method()) {
-            case 'POST':
-                if ($request->recipe) {
-                    $data = $request->recipe;
-                    $data['materials'] = explode('\\n', $data['materials']);
-                    unset($data['user']);
-                    $data['contents'] = $this->post('recipes/contents/all', [
-                        'form_params' => [
-                            'recipe_id' => $data['id']
-                        ]
-                    ])->data;
+            case 'GET':
+                $res = $this->get('recipes/get/' . $id);
+                if ($res->data) {
                     return Inertia::render('UploadRecipe', [
-                        'recipe' => $data
+                        'recipe' => $res->data
                     ]);
                 }
-                abort(404);
+                return redirect()->back();
                 break;
-            case 'PUT':
+            case 'POST':
+                dd($request->all());
                 break;
             default:
                 abort(404);

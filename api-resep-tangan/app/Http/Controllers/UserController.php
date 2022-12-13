@@ -24,7 +24,7 @@ class UserController extends Controller
             return new PostResponse(false);
         }
         $user = User::findOrFail($user->id);
-        $user->recipes = Recipes::where('user_id', $user->id)->get();
+        $user->recipes = Recipes::where('user_id', $user->id)->orderByDesc('id')->get();
         $user->followers = Follows::where('follow', $user->id)->count();
         $user->following = Follows::where('id_user', $user->id)->count();
         return new PostResponse(true, resource: $user);

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Namshi\JOSE\Signer\OpenSSL\RSA;
 
 class RecipesController extends Controller
 {
@@ -98,6 +99,17 @@ class RecipesController extends Controller
             }
         }
         return new PostResponse(true, resource: self::get());
+    }
+
+    public function get_id(Request $request, $id)
+    {
+        $recipe = Recipes::find($id);
+        if (Auth::user()->id == $recipe->user_id) {
+            $recipe->materials = explode('\\n', $recipe->materials);
+            $recipe->contents = $recipe->contents()->get();
+            return new PostResponse(true, resource: $recipe);
+        }
+        return new PostResponse(false, resource: null);
     }
 
     public function all()

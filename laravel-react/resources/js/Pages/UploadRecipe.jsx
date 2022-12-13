@@ -3,16 +3,19 @@ import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import InputFile from '@/Components/InputFile';
 import { Head, useForm, usePage } from '@inertiajs/inertia-react';
+import {BASE_STORAGE_API_URL} from '@/assets/config';
 
 export default function UploadRecipe() {
     const { recipe } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: recipe ? recipe.title : '',
+        title: recipe?.title || '',
         banner: {},
-        description: recipe ? recipe.description : '',
-        materials: [],
-        contents: [],
+        description: recipe?.description || '',
+        materials: recipe?.materials || [],
+        contents: recipe?.contents || [],
     });
+
+    const bannerThumbnailRef = useRef(null);
 
     const material = useRef(null);
 
@@ -20,6 +23,17 @@ export default function UploadRecipe() {
     const step = useRef(null);
     const stepFile = useRef(null);
     const stepThumbnail = useRef(null);
+    const [stepErrors,setStepErrors] = useState(false);
+
+    useEffect(()=>{
+        let loaded = true;
+        if(loaded && recipe !== undefined){
+            bannerThumbnailRef.current.src = BASE_STORAGE_API_URL+recipe?.banner.path
+        }
+        return () => {
+            loaded = false;
+        }
+    },[recipe]);
 
     const handleChange = (e) => {
         setData(e.target.name, e.target.value)
@@ -59,12 +73,21 @@ export default function UploadRecipe() {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('upload'), data, {
-            forceFormData: true,
-            onFinish: () => {
-                reset();
-            }
-        });
+        if(recipe){ 
+            post(route('form-edit-recipe'),data, {
+                forceFormData: true,
+                onFinish: () => {
+                    reset();
+                }
+            });
+        }else{
+            post(route('upload'), data, {
+                forceFormData: true,
+                onFinish: () => {
+                    reset();
+                }
+            });
+        }
     };
 
     return (
@@ -88,11 +111,7 @@ export default function UploadRecipe() {
                             </div>
 
                             {
-                                errors.title
-                                    ?
-                                    <p className="mb-2 text-sm text-red-600 dark:text-red-500">{errors.title}</p>
-                                    :
-                                    ''
+                                errors.title && <p className="mb-2 text-sm text-red-600 dark:text-red-500">{errors.title}</p>
                             }
 
                             <div className="mb-6">
@@ -101,6 +120,8 @@ export default function UploadRecipe() {
                                     <InputFile
                                         name="banner"
                                         dimension={{ width: 800, height: 400 }}
+                                        thumbnailRef={bannerThumbnailRef}
+                                        isEdit={recipe !== undefined}
                                         handleFile={(file) => setData('banner', file)} />
                                 </div>
                             </div>
@@ -140,10 +161,7 @@ export default function UploadRecipe() {
                                 <div className="w-full text-gray-900 bg-white rounded-lg border border-gray-200 mt-4">
 
                                     {
-                                        data.materials == null ?
-                                            ''
-                                            :
-                                            data.materials.map((e, i) => {
+                                        data.materials && data.materials.map((e, i) => {
                                                 return (
                                                     <div className="inline-flex relative place-content-between py-2 px-4 w-full text-sm font-medium border-b border-gray-200" key={i}>
                                                         <span>{e}</span>
@@ -160,15 +178,17 @@ export default function UploadRecipe() {
                             <div className="mb-6">
                                 <label htmlFor="contents" className="block mb-2 text-sm font-medium text-gray-900">Langkah - langkah</label>
 
-                                <div className="mb-6">
+                                <div className={`${stepErrors ? 'mb-2' : 'mb-6'}`}>
                                     <label htmlFor="materials" className="sr-only">step</label>
                                     <textarea
                                         name="description"
                                         rows="4"
                                         ref={step}
+                                        onBlur={(e) => e.target.value == '' ? setStepErrors(true) : setStepErrors(false)}
                                         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Deskripsikan resepmu..." />
                                 </div>
+                                {stepErrors && <p className="mb-2 text-sm text-red-600 dark:text-red-500">deskripsi langkah tidak boleh kosong</p>}
 
                                 <div className="flex items-center justify-center w-full mb-6">
                                     <InputFile
@@ -208,9 +228,12 @@ export default function UploadRecipe() {
                                                     {e.step}
                                                 </h3>
                                                 <div className="w-full my-4">
-                                                    <img className="rounded" src={
-                                                        window.URL.createObjectURL(e.media)
-                                                    } />
+                                                    {
+                                                        e.media?.path ?
+                                                        <img className="rounded" src={BASE_STORAGE_API_URL+e.media.path} />
+                                                        :
+                                                        <img className="rounded" src={window.URL.createObjectURL(e.media)} />
+                                                    }
                                                 </div>
                                                 <button
                                                     type="button"

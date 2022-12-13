@@ -53,7 +53,8 @@ Route::group([
                 Route::get('/upload-recipe', 'upload')->name('upload');
                 Route::post('/upload-recipe', 'add');
                 Route::post('/delete-recipe', 'delete')->name('delete-recipe');
-                Route::post('/edit-recipe', 'edit')->name('edit-recipe');
+                Route::get('/edit-recipe/{id}', 'edit')->name('edit-recipe');
+                Route::post('/edit-recipe', 'edit')->name('form-edit-recipe');
                 Route::post('/comment-recipe', 'comment')->name('comment-recipe');
                 Route::post('/delete-comment-recipe', 'delete_comment')->name('delete-comment-recipe');
                 Route::post('/rating-recipe', 'rating')->name('rating-recipe');
