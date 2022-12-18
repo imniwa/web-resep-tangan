@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
 use App\Models\Comments;
+use App\Models\Contents;
 use App\Models\Rating;
 use App\Models\Recipes;
 use App\Models\User;
@@ -177,20 +178,24 @@ class RecipesController extends Controller
         }
         $banner = json_decode($recipe->banner);
         foreach ($request->only(['title', 'description', 'banner', 'materials']) as $k => $d) {
-            if (isset($d) && $d != null) {
-                if ($k == 'materials') {
-                    $request->validate([
-                        'materials' => 'array'
-                    ]);
-                    $data[$k] = implode('\\n', $d);
-                } else if ($k == 'banner') {
-                    $request->validate([
-                        'banner' => 'image|max:1980',
-                    ]);
-                    $data[$k] = json_encode(FileController::update($banner->path, $request->file('banner'), self::$dir));
-                } else {
-                    $data[$k] = $request->$d;
-                }
+            if(empty($k)){
+                continue;
+            }
+            if ($d == null) {
+                continue;
+            }
+            if ($k == 'materials') {
+                $request->validate([
+                    'materials' => 'array'
+                ]);
+                $data[$k] = implode('\\n', $d);
+            } else if ($k == 'banner') {
+                $request->validate([
+                    'banner' => 'image|max:1980',
+                ]);
+                $data[$k] = json_encode(FileController::update($banner->path, $request->file('banner'), self::$dir));
+            } else {
+                $data[$k] = $d;
             }
         }
         self::update($id, $data);

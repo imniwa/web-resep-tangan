@@ -80,8 +80,11 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this->post('auth/logout');
-        $request->session()->flush();
-        return redirect()->route('login');
+        try {
+            $this->post('auth/logout');
+        } finally {
+            $request->session()->flush();
+            return redirect()->route('login');
+        }
     }
 }

@@ -79,6 +79,9 @@ class RecipeController extends Controller
                     'multipart' => []
                 ];
                 foreach ($content as $key => $val) {
+                    if(empty($val)){
+                        continue;
+                    }
                     array_push($data['multipart'], [
                         'name' => $key,
                         'contents' => $key !== 'media' ? $val : \GuzzleHttp\Psr7\Utils::tryFopen($val->getPathname(), 'r')
@@ -110,7 +113,67 @@ class RecipeController extends Controller
                 return redirect()->back();
                 break;
             case 'POST':
-                dd($request->all());
+                $title = Str::lower($request->title);
+                $title = Str::replace(' ', '-', $title);
+                $res = $this->get('recipes/check-title/' . $title);
+                // if (!$res->status) {
+                //     return redirect()->back()->withErrors([
+                //         'title' => 'anda sudah membuat resep ini, gunakan nama lain.'
+                //     ]);
+                // }
+                $data = [
+                    'multipart' => []
+                ];
+                foreach ($request->only(['id','title', 'description', 'banner', 'materials']) as $key => $value) {
+                    if ($key === 'materials') {
+                        foreach ($value as $val) {
+                            array_push($data['multipart'], [
+                                'name' => $key . '[]',
+                                'contents' => $val
+                            ]);
+                        }
+                    } else {
+                        if($value){
+                            array_push($data['multipart'], [
+                                'name' => $key,
+                                'contents' => $key === 'banner' ? \GuzzleHttp\Psr7\Utils::tryFopen($value->getPathname(), 'r') : $value
+                            ]);
+                        }
+                    }
+                }
+                $res = $this->post('recipes/update', $data);
+                if (!empty($request->contents)) {
+                    $recipe_id = $res->data->id;
+                    foreach ($request->contents as $content) {
+                        $data = [
+                            'multipart' => []
+                        ];
+                        if(isset($content['id'])){
+                            array_push($data['multipart'],[
+                                'name' => 'id',
+                                'contents' => $content['id']
+                            ]);
+                        }
+                        foreach ($content as $key => $val) {
+                            if(empty($val) || is_array($val)){
+                                continue;
+                            }
+                            array_push($data['multipart'], [
+                                'name' => $key,
+                                'contents' => $key !== 'media' ? $val : \GuzzleHttp\Psr7\Utils::tryFopen($val->getPathname(), 'r')
+                            ]);
+                        }
+                        array_push($data['multipart'], [
+                            'name' => 'recipe_id',
+                            'contents' => $recipe_id
+                        ]);
+                        $res = $this->post('recipes/contents', $data);
+                    }
+                }
+                return redirect()->route('user-recipe', [
+                    'username' => session('user')->username,
+                    'title' => Str::replace('-', ' ', $request->title)
+                ]);
                 break;
             default:
                 abort(404);

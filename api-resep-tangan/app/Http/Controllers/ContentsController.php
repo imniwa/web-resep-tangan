@@ -60,15 +60,17 @@ class ContentsController extends Controller
         }
         $request->validate([
             'recipe_id' => 'required',
-            'media' => 'required|file|mimetypes:image/jpg,image/png,image/jpeg',
+            'media' => 'file|mimetypes:image/jpg,image/png,image/jpeg',
             'step' => 'required|string'
         ]);
-        $file = $request->file('media');
         $data = [
             'recipe_id' => $request->recipe_id,
-            'media' => json_encode(FileController::move($file, self::$dir)),
             'step' => Str::lower($request->step)
         ];
+        $file = $request->file('media');
+        if($file){
+            $data['media'] = json_encode(FileController::move($file, self::$dir));
+        }
         return new PostResponse(true, resource: self::add($data));
     }
 
@@ -81,7 +83,10 @@ class ContentsController extends Controller
             return new PostResponse(true, 'contents not found');
         }
         $data = [];
-        $old = json_decode(self::get(id: $request->id)->media)->path;
+        $old = self::get(id: $request->id);
+        if($old->media){
+            $old = json_decode($old->media)->path;
+        }
         $file = $request->file('media');
         if ($file) {
             $data['media'] = json_encode(FileController::update($old, $file, self::$dir));

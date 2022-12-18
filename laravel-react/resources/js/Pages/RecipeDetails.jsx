@@ -138,9 +138,12 @@ export default function RecipeDetails(props) {
                                                         <h3 className="text-lg font-semibold text-gray-900">
                                                             {e.step}
                                                         </h3>
-                                                        <div className="w-full my-4">
-                                                            <img className="rounded" src={`${BASE_STORAGE_API_URL}/${e.media.path}`} />
-                                                        </div>
+                                                        {
+                                                            e.media?.path &&
+                                                            <div className="w-full my-4">
+                                                                <img className="rounded" src={`${BASE_STORAGE_API_URL}/${e.media.path}`} />
+                                                            </div>
+                                                        }
                                                     </li>
                                                 )
                                             })

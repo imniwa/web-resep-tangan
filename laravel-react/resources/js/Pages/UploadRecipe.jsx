@@ -8,6 +8,7 @@ import {BASE_STORAGE_API_URL} from '@/assets/config';
 export default function UploadRecipe() {
     const { recipe } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
+        id: recipe?.id || '',
         title: recipe?.title || '',
         banner: {},
         description: recipe?.description || '',
@@ -232,7 +233,8 @@ export default function UploadRecipe() {
                                                         e.media?.path ?
                                                         <img className="rounded" src={BASE_STORAGE_API_URL+e.media.path} />
                                                         :
-                                                        <img className="rounded" src={window.URL.createObjectURL(e.media)} />
+                                                        (e.media &&
+                                                        <img className="rounded" src={window.URL.createObjectURL(e.media)} />)
                                                     }
                                                 </div>
                                                 <button
