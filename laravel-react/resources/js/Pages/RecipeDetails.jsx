@@ -10,7 +10,7 @@ import { Inertia } from '@inertiajs/inertia';
 
 export default function RecipeDetails(props) {
     const { recipe, self_rating } = usePage().props;
-    const { title, banner, user, description, materials, rating, comments, contents } = recipe;
+    const { title, banner, user, description, materials, rating, comments, contents, views } = recipe;
     const { data, setData, post, processing, errors, reset } = useForm({
         recipe_id: recipe.id,
         comment: ''
@@ -25,25 +25,25 @@ export default function RecipeDetails(props) {
     }
 
     const handleRating = (e) => {
-        Inertia.post(route('rating-recipe'),{
+        Inertia.post(route('rating-recipe'), {
             recipe_id: recipe.id,
-            rating:e,
+            rating: e,
             is_self: self_rating
         });
     }
 
     const handleComment = (e) => {
-        if(data.comment.length == 0){
+        if (data.comment.length == 0) {
             return;
         }
-        Inertia.post(route('comment-recipe'),data,{
+        Inertia.post(route('comment-recipe'), data, {
             onFinish: () => {
                 reset()
             },
             onSuccess: () => {
                 window.scroll({
                     top: document.getElementById('reviews').getBoundingClientRect().top + window.scrollY,
-                    behavior:"smooth"
+                    behavior: "smooth"
                 })
             }
         });
@@ -65,7 +65,7 @@ export default function RecipeDetails(props) {
                                     </h1>
                                 </div>
                                 <Link href={route('home')}>
-                                    <button type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                                    <button type="button" className="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                                         Kembali ke halaman utama
                                     </button>
                                 </Link>
@@ -90,9 +90,15 @@ export default function RecipeDetails(props) {
                                             <div>
                                                 <Link href={route('user', { 'username': user.username })} className="text-lg font-medium capitalize">{user.name}</Link>
                                             </div>
-                                            <div className="flex items-center">
-                                                <svg aria-hidden="true" className={`w-5 h-5 ${rating == 0 ? 'text-gray-400' : 'text-yellow-400'}`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                <p className="ml-2 text-sm font-bold text-gray-900">{rating}</p>
+                                            <div className="flex items-center space-x-4 mb-2">
+                                                <div className="flex items-center">
+                                                    <svg aria-hidden="true" className={`w-5 h-5 ${rating == 0 ? 'text-gray-400' : 'text-yellow-400'}`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                                    <p className="ml-2 text-sm font-bold text-gray-900">{rating}</p>
+                                                </div>
+                                                <div className='flex items-center'>
+                                                    <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                                    <p className="ml-2 text-sm font-bold text-gray-900">{views}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +162,7 @@ export default function RecipeDetails(props) {
                                 <div className="flex place-content-between  ">
                                     <h1 className="text-xl font-medium">Reviews</h1>
                                     {
-                                        !self_rating && <Rating max={5} handle={handleRating} self={self_rating}/>
+                                        !self_rating && <Rating max={5} handle={handleRating} self={self_rating} />
                                     }
                                 </div>
                                 <hr className="my-4 h-px bg-gray-200 border-0" />

@@ -13,7 +13,11 @@ class UserController extends Controller
 
     public function top()
     {
-        $user = User::all()->take(10);
+        $follow = Follows::all()->groupBy('follow')->sortDesc()->take(8);
+        $user = [];
+        foreach($follow as $k => $d){
+            $user[] = User::where('id',$k)->first();
+        }
         return new PostResponse(true, resource: $user);
     }
 

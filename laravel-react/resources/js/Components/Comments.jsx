@@ -4,7 +4,7 @@ import { usePage } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Comments({ id, user, message, time }) {
-    const { auth } = usePage().props
+    const { auth } = usePage().props;
     const createdTime = new Date(Date.parse(time));
     const handleClick = () => {
         Inertia.post(route('delete-comment-recipe'),{
@@ -14,7 +14,7 @@ export default function Comments({ id, user, message, time }) {
     return (
         <div className=" w-full border px-4 py-2 rounded relative group">
             {
-                auth?.user.id == user.id
+                auth?.user?.id == user.id
                 &&
                 <div className="lg:opacity-0 absolute top-2 right-0 lg:group-hover:opacity-100 transition-all">
                     <button type="button" onClick={handleClick}

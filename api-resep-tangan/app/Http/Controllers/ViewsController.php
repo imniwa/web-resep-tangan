@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResponse;
 use App\Models\Views;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 
 class ViewsController extends Controller
 {
@@ -13,15 +16,17 @@ class ViewsController extends Controller
         $request->validate([
             'recipe_id' => 'required'
         ]);
-        if ($request->cookie('name') != null) {
-            $token = $request->cookie('name');
-            $exist = Views::where('token', $token)->first();
-            if (!$exist) {
-                Views::create([
-                    'recipe_id' => $request->recipe_id,
-                    'token' => $token
-                ]);
-            }
+        $token = $request->cookie('resep_tangan_session');
+        if(!$token){
+            $token = Hash::make($request->ip().'|'. Str::random(8));
+            Cookie::queue('resep_tangan_session',$token,120);
+        }
+        $exist = Views::where('token', $token)->first();
+        if (!$exist) {
+            Views::create([
+                'recipe_id' => $request->recipe_id,
+                'token' => $token
+            ]);
         }
     }
 

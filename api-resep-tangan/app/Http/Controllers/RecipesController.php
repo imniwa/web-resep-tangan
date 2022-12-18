@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResponse;
 use App\Models\Comments;
-use App\Models\Contents;
 use App\Models\Rating;
 use App\Models\Recipes;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Namshi\JOSE\Signer\OpenSSL\RSA;
 
 class RecipesController extends Controller
 {
@@ -27,16 +24,18 @@ class RecipesController extends Controller
         $id = isset($options['id']) ? $options['id'] : null;
         $title = isset($options['title']) ? $options['title'] : null;
         $username = isset($options['username']) ? $options['username'] : null;
+        $sql = [];
+        foreach(explode(' ',Str::replace('-', ' ', $title)) as $word){
+            $sql[] = ['title', 'like', '%'.$word.'%'];
+        }
         if ($title && $username) {
             $user_id = User::where('username', $username)->first()->id;
-            $recipes = Recipes::where([
-                ['title', 'like', '%' . Str::replace('-', ' ', $title) . '%'],
-                ['user_id', $user_id]
-            ])->get();
+            $sql[] = ['user_id', $user_id];
+            $recipes = Recipes::where($sql)->get();
         } else if ($id) {
             $recipes = Recipes::where('id', $id)->get();
         } else if ($title) {
-            $recipes = Recipes::where('title', 'like', '%' . Str::replace('-', ' ', $title) . '%')->get();
+            $recipes = Recipes::where($sql)->get();
         } else {
             $recipes = Recipes::all();
         }
@@ -88,16 +87,12 @@ class RecipesController extends Controller
 
     public function recipes(Request $request, $username, $title)
     {
-        if (Cookie::get('resep_tangan_session') == null) {
-            Cookie::queue('resep_tangan_session', $request->ip() . '|' . Str::random(6), 60);
-            if ($title && $username) {
-                $recipe = self::get(['title' => $title, 'username' => $username])[0];
-                $request->merge(['recipe_id' => $recipe->id]);
-                ViewsController::add($request);
-                return new PostResponse(true, resource: $recipe);
-            } else {
-                return $this->all();
-            }
+        if ($title && $username) {
+            $recipe = self::get(['title' => $title, 'username' => $username])[0];
+            ViewsController::add($request->merge(['recipe_id' => $recipe->id]));
+            return new PostResponse(true, resource: $recipe);
+        } else {
+            return $this->all();
         }
         return new PostResponse(true, resource: self::get());
     }
@@ -115,21 +110,25 @@ class RecipesController extends Controller
 
     public function all()
     {
-        $recipes = Recipes::all();
-        foreach ($recipes as $recipe) {
-            $r = Recipes::findOrFail($recipe->id);
-            $recipe->user = $r->user()->first();
-            $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
-        }
+        $recipes = self::get();
         return new PostResponse(true, resource: $recipes);
     }
 
     public function top()
     {
-        $recipes = Recipes::all()->take(9);
+        $top = Rating::all()->sortByDesc('rating')->groupBy('recipe_id');
+        foreach($top as $k => $avg){
+            $top[$k] = $avg->average('rating');
+        }
+        $recipes = [];
+        foreach($top->sortDesc()->take(9) as $k => $d){
+            $recipes[] = Recipes::where('id',$k)->first();
+        };
         foreach ($recipes as $recipe) {
             $r = Recipes::findOrFail($recipe->id);
-            $recipe->user = $r->user()->first();
+            $recipe->user = $r->user()->first();    
+            $recipe->views = $r->views()->count();
+            $recipe->rating = floatval(number_format(Rating::where('recipe_id', $recipe->id)->get()->average('rating'), 2));
         }
         return new PostResponse(true, resource: $recipes);
     }
