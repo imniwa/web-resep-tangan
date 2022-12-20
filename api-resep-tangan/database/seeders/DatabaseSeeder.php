@@ -34,10 +34,17 @@ class DatabaseSeeder extends Seeder
         $this->command->info("Seeding Recipes");
         $this->command->getOutput()->progressStart(20);
         for ($i = 0; $i < 20; $i++) {
+            $materials = [];
+            for ($j=0; $j < rand(1,4); $j++) { 
+                $materials[] = rand(3,6).' '.$faker->vegetableName();
+            }
+            for ($j=0; $j < rand(2,6); $j++) { 
+                $materials[] = rand(3,8).' '.$faker->meatName();
+            }
             \App\Models\Recipes::factory()->create([
                 'title' => $faker->foodName(),
                 'description' => $faker->text(),
-                'materials' => implode('\\n', (array)$faker->sentences($nb = 3, $asText = false)),
+                'materials' => implode('\\n', $materials),
                 'user_id' => $i + 1,
             ]);
             $this->command->getOutput()->progressAdvance();
